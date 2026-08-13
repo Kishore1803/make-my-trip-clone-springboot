@@ -145,6 +145,7 @@ public class User {
         private String date;
         private int quantity;
         private Double totalPrice;
+        
         public Booking() {
         }
 
