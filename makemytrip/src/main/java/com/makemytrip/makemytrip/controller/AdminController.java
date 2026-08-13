@@ -17,24 +17,34 @@ import com.makemytrip.makemytrip.repository.HotelRepository;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "https://make-my-trip-clone-springboot-1-x8h4.onrender.com")
+@CrossOrigin( origins = "https://make-my-trip-clone-springboot-1-x8h4.onrender.com") 
+
 public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private HotelRepository hotelRepository;
-
-    @Autowired
     private FlightRepository flightRepository;
 
+    @Autowired
+    private HotelRepository hotelRepository;
+
+    // GET ALL USERS
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
     }
 
+    // GET ALL FLIGHTS
+    @GetMapping("/flight")
+    public ResponseEntity<List<Flight>> getAllFlights() {
+        List<Flight> flights = flightRepository.findAll();
+        return ResponseEntity.ok(flights);
+    }
+
+    // ADD FLIGHT
     @PostMapping("/flight")
     public ResponseEntity<Flight> addFlight(
             @RequestBody Flight flight) {
@@ -42,32 +52,45 @@ public class AdminController {
         return ResponseEntity.ok(savedFlight);
     }
 
+    // EDIT FLIGHT
     @PutMapping("/flight/{id}")
     public ResponseEntity<Flight> editFlight(
             @PathVariable Long id,
             @RequestBody Flight updatedFlight) {
 
         Optional<Flight> flightOptional =
-                flightRepository.findById(id);
-
+               flightRepository.findById(id);
         if (flightOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         Flight flight = flightOptional.get();
-        flight.setFlightName(updatedFlight.getFlightName());
-        flight.setFrom(updatedFlight.getFrom());
-        flight.setTo(updatedFlight.getTo());
-        flight.setDepartureTime(updatedFlight.getDepartureTime());
-        flight.setArrivalTime(updatedFlight.getArrivalTime());
-        flight.setPrice(updatedFlight.getPrice());
-        flight.setAvailableSeats(updatedFlight.getAvailableSeats());
-
+        flight.setFlightName(
+                updatedFlight.getFlightName()
+        );
+        flight.setFrom(
+                updatedFlight.getFrom()
+        );
+        flight.setTo(
+                updatedFlight.getTo()
+        );
+        flight.setDepartureTime(
+                updatedFlight.getDepartureTime()
+        );
+        flight.setArrivalTime(
+                updatedFlight.getArrivalTime()
+        );
+        flight.setPrice(
+                updatedFlight.getPrice()
+        );
+        flight.setAvailableSeats(
+                updatedFlight.getAvailableSeats()
+        );
         Flight savedFlight =
                 flightRepository.save(flight);
         return ResponseEntity.ok(savedFlight);
     }
 
+    // DELETE FLIGHT
     @DeleteMapping("/flight/{id}")
     public ResponseEntity<Void> deleteFlight(
             @PathVariable Long id) {
@@ -83,15 +106,26 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
+    // GET ALL HOTELS
+    @GetMapping("/hotel")
+    public ResponseEntity<List<Hotel>> getAllHotels() {
+        List<Hotel> hotels = hotelRepository.findAll();
+        return ResponseEntity.ok(hotels);
+    }
+
+
+    // ADD HOTEL
     @PostMapping("/hotel")
     public ResponseEntity<Hotel> addHotel(
             @RequestBody Hotel hotel) {
+
         Hotel savedHotel =
                 hotelRepository.save(hotel);
         return ResponseEntity.ok(savedHotel);
     }
 
 
+    // EDIT HOTEL
     @PutMapping("/hotel/{id}")
     public ResponseEntity<Hotel> editHotel(
             @PathVariable Long id,
@@ -99,34 +133,42 @@ public class AdminController {
 
         Optional<Hotel> hotelOptional =
                 hotelRepository.findById(id);
-
         if (hotelOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         Hotel hotel = hotelOptional.get();
-        hotel.setHotelName(updatedHotel.getHotelName());
-        hotel.setLocation(updatedHotel.getLocation());
-        hotel.setAvailableRooms(updatedHotel.getAvailableRooms());
-        hotel.setPricePerNight(updatedHotel.getPricePerNight());
-        hotel.setAmenities(updatedHotel.getAmenities());
-
+        hotel.setHotelName(
+                updatedHotel.getHotelName()
+        );
+        hotel.setLocation(
+                updatedHotel.getLocation()
+        );
+        hotel.setPricePerNight(
+                updatedHotel.getPricePerNight()
+        );
+        hotel.setAvailableRooms(
+                updatedHotel.getAvailableRooms()
+        );
+        hotel.setAmenities(
+                updatedHotel.getAmenities()
+        );
         Hotel savedHotel =
                 hotelRepository.save(hotel);
         return ResponseEntity.ok(savedHotel);
     }
 
+
+    // DELETE HOTEL
     @DeleteMapping("/hotel/{id}")
     public ResponseEntity<Void> deleteHotel(
             @PathVariable Long id) {
 
         Optional<Hotel> hotelOptional =
                 hotelRepository.findById(id);
-
         if (hotelOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
         hotelRepository.delete(hotelOptional.get());
         return ResponseEntity.noContent().build();
     }
