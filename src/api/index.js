@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACKEND_URL =
-  "https://make-my-trip-clone-springboot-a5az.onrender.com";
+  "https://make-my-trip-clone-springboot-backend.onrender.com";
 
 const API = axios.create({
   baseURL: BACKEND_URL,

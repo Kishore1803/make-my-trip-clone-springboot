@@ -40,7 +40,7 @@ public class SecurityConfig {
                 List.of(
                     "http://localhost:3000",
                     "http://localhost:5173",
-                    "https://make-my-trip-clone-springboot-1-x8h4.onrender.com"
+                    "https://make-my-trip-clone-springboot-frontend.onrender.com/"
                 )
         );
 

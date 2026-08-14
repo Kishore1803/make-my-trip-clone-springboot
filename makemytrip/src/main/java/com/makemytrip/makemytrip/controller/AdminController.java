@@ -17,7 +17,6 @@ import com.makemytrip.makemytrip.repository.HotelRepository;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin( origins = "https://make-my-trip-clone-springboot-1-x8h4.onrender.com") 
 
 public class AdminController {
 
