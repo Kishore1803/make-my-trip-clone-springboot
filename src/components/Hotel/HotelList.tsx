@@ -30,10 +30,6 @@ interface HotelListProps {
   onAdd: () => void;
 }
 
-// ======================================================
-// 10 HOTELS
-// ======================================================
-
 const defaultHotels: Hotel[] = [
   {
     hotelName: "Taj Coromandel",
@@ -107,18 +103,10 @@ const defaultHotels: Hotel[] = [
   },
 ];
 
-// ======================================================
-// HOTEL LIST
-// ======================================================
-
 const HotelList = ({ onSelect, onAdd }: HotelListProps) => {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<number | null>(null);
-
-  // ====================================================
-  // LOAD HOTELS
-  // ====================================================
 
   useEffect(() => {
     loadHotels();
@@ -127,19 +115,11 @@ const HotelList = ({ onSelect, onAdd }: HotelListProps) => {
   const loadHotels = async () => {
     try {
       setLoading(true);
-
-      // Get hotels from MySQL
       let data = await getHotels();
-
       console.log("Hotels from MySQL:", data);
-
-      // ==================================================
-      // IF TABLE IS EMPTY, ADD 10 HOTELS
-      // ==================================================
 
       if (!data || data.length === 0) {
         console.log("Hotel table is empty. Adding 10 hotels...");
-
         for (const hotel of defaultHotels) {
           try {
             const savedHotel = await addhotel(
@@ -156,25 +136,17 @@ const HotelList = ({ onSelect, onAdd }: HotelListProps) => {
           }
         }
 
-        // Get the newly inserted hotels
         data = await getHotels();
-
         console.log("Hotels after insertion:", data);
       }
-
       setHotels(data || []);
     } catch (error) {
       console.error("Get Hotels Error:", error);
-
       setHotels([]);
     } finally {
       setLoading(false);
     }
   };
-
-  // ====================================================
-  // DELETE
-  // ====================================================
 
   const handleDelete = async (id: number) => {
     const confirmed = window.confirm(
@@ -187,47 +159,33 @@ const HotelList = ({ onSelect, onAdd }: HotelListProps) => {
 
     try {
       setDeletingId(id);
-
       console.log("Deleting hotel ID:", id);
-
       await deletehotel(id);
-
       setHotels((previousHotels) =>
         previousHotels.filter((hotel) => hotel.id !== id),
       );
 
       alert("Hotel deleted successfully");
+      
     } catch (error: any) {
       console.error("Delete Hotel Error:", error);
-
       console.error("Server Response:", error?.response?.data);
-
       alert(error?.response?.data?.message || "Failed to delete hotel");
     } finally {
       setDeletingId(null);
     }
   };
 
-  // ====================================================
-  // LOADING
-  // ====================================================
-
   if (loading) {
     return <Loader />;
   }
 
-  // ====================================================
-  // UI
-  // ====================================================
-
   return (
     <div className="w-full rounded-xl bg-white p-6 shadow-lg">
-      {/* HEADER */}
 
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold text-black">Hotel List</h2>
-
           <p className="mt-1 text-sm text-gray-600">Hotels stored in MySQL</p>
         </div>
 
@@ -240,24 +198,17 @@ const HotelList = ({ onSelect, onAdd }: HotelListProps) => {
         </Button>
       </div>
 
-      {/* TABLE */}
-
       <div className="overflow-x-auto rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead className="font-bold text-black">Hotel Name</TableHead>
-
               <TableHead className="font-bold text-black">Location</TableHead>
-
               <TableHead className="font-bold text-black">
                 Price / Night
               </TableHead>
-
               <TableHead className="font-bold text-black">Rooms</TableHead>
-
               <TableHead className="font-bold text-black">Amenities</TableHead>
-
               <TableHead className="text-center font-bold text-black">
                 Actions
               </TableHead>
@@ -271,38 +222,30 @@ const HotelList = ({ onSelect, onAdd }: HotelListProps) => {
                   <TableCell className="font-semibold text-black">
                     {hotel.hotelName}
                   </TableCell>
-
                   <TableCell className="text-black">{hotel.location}</TableCell>
-
                   <TableCell className="font-semibold text-black">
                     ₹{hotel.pricePerNight}
                   </TableCell>
-
                   <TableCell className="text-black">
                     {hotel.availableRooms}
                   </TableCell>
-
                   <TableCell className="text-black">
                     {hotel.amenities}
                   </TableCell>
 
                   <TableCell>
                     <div className="flex justify-center gap-2">
-                      {/* EDIT */}
 
                       <Button
                         type="button"
                         onClick={() => {
                           console.log("Edit clicked:", hotel);
-
                           onSelect(hotel);
                         }}
                         className="bg-blue-600 font-semibold text-white hover:bg-blue-700"
                       >
                         Edit
                       </Button>
-
-                      {/* DELETE */}
 
                       <Button
                         type="button"
@@ -329,8 +272,6 @@ const HotelList = ({ onSelect, onAdd }: HotelListProps) => {
           </TableBody>
         </Table>
       </div>
-
-      {/* TOTAL */}
 
       <p className="mt-4 font-semibold text-black">
         Total Hotels: {hotels.length}

@@ -17,11 +17,13 @@ import {
   Umbrella,
   Users,
 } from "lucide-react";
+
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function Home() {
+  
   const [bookingtype, setbookingtype] = useState("flights");
   const [from, setfrom] = useState("");
   const [to, setto] = useState("");
@@ -274,13 +276,14 @@ export default function Home() {
   useEffect(() => {
     const fetchdata = async () => {
       try {
+        
         setloading(true);
 
         const hoteldata = await getHotels();
         sethotel(hoteldata);
-
         const flightdata = await getFlights();
-        setflight(flightdata);
+        setflight(flightdata); 
+
       } catch (error) {
         console.error("Failed to load flights/hotels:", error);
       } finally {
@@ -323,15 +326,13 @@ export default function Home() {
   };
 
   const formatDate = (dateString: string): string => {
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
+    if (!dateString) return "";
+    const date = new Date(`${dateString}T00:00:00`);
+    return date.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", options);
+      year: "numeric",
+    });
   };
 
   const handlebooknow = (id: any) => {
@@ -376,7 +377,6 @@ export default function Home() {
 
         <div className="mx-auto max-w-5xl rounded-2xl bg-white p-3 shadow-xl ring-1 ring-gray-200">
           <div className="grid grid-cols-1 items-stretch md:grid-cols-2 lg:grid-cols-5">
-            {/* FROM */}
             {bookingtype === "flights" && (
               <div className="border-b border-gray-200 text [-10px] px-4 py-3 lg:border-b-0 lg:border-r">
                 <SearchSelect
@@ -390,7 +390,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* TO / CITY */}
             <div className="border-b border-gray-200 px-4 py-3 lg:border-b-0 lg:border-r">
               <SearchSelect
                 option={cityOptions}
@@ -406,7 +405,6 @@ export default function Home() {
               />
             </div>
 
-            {/* DATE */}
             <div className="border-b border-gray-200 px-4 py-3 lg:border-b-0 lg:border-r">
               <SearchInput
                 icon={<Calendar className="text-blue-600" />}
@@ -420,7 +418,6 @@ export default function Home() {
               />
             </div>
 
-            {/* TRAVELERS */}
             <div className="border-b border-gray-200 px-4 py-3 lg:border-b-0 lg:border-r">
               <SearchInput
                 icon={<Users className="text-blue-600" />}
@@ -434,7 +431,6 @@ export default function Home() {
               />
             </div>
 
-            {/* SEARCH */}
             <div className="flex items-center p-2">
               <Button
                 className="h-full min-h-[64px] w-full rounded-xl bg-black font-bold text-white shadow-md transition-all"
@@ -462,16 +458,16 @@ export default function Home() {
                           Flight Name: {result.flightName}
                         </p>
 
-                        <h3 className="text-black">
+                        <h3 className="text-black ">
                           {result.from} to {result.to}
                         </h3>
 
                         <p className="text-black">
-                          Departure Time: {result.departureTime}
+                          Departure: {formatDate(date)} {result.departureTime}
                         </p>
 
                         <p className="text-black">
-                          Arrival Time: {result.arrivalTime}
+                          Arrival: {formatDate(date)} {result.arrivalTime}
                         </p>
 
                         <p className="text-lg text-black font-bold mt-2">
@@ -513,17 +509,15 @@ export default function Home() {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4">
-          {/* Offers Section */}
           <section className="my-16">
             <h2 className="text-2xl font-bold mb-8 text-white">Best Offers</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-black">
               {offers.map((offer, index) => (
                 <OfferCard key={index} {...offer} />
               ))}
             </div>
           </section>
 
-          {/* Collections Section */}
           <section className="my-16">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-bold text-white">
@@ -537,7 +531,6 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Wonders Section */}
           <section className="my-16">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl font-bold text-white">
@@ -550,14 +543,13 @@ export default function Home() {
               ))}
             </div>
           </section>
-
-          {/* Download App Section */}
           <DownloadApp />
         </div>
       </main>
     </div>
   );
 }
+
 const OfferCard = ({ title, description, imageUrl }: any) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -594,12 +586,13 @@ const CollectionCard = ({ title, imageUrl, tag }: any) => {
     </div>
   );
 };
+
 const DownloadApp = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md max-w-7xl mx-auto my-12">
       <div className="flex flex-col md:flex-row items-center justify-between">
         <div className="mb-6 md:mb-0">
-          <h3 className="text-xl font-bold mb-2">Download App Now!</h3>
+          <h3 className="text-xl font-bold mb-2 text-black">Download App Now!</h3>
           <p className="text-gray-600 mb-4">
             Get India's #1 travel super app with best deals on flights
           </p>
@@ -643,6 +636,7 @@ const WonderCard = ({ title, imageUrl }: any) => {
     </div>
   );
 };
+
 function NavItem({ icon, text, active = false, onClick }: any) {
   return (
     <button

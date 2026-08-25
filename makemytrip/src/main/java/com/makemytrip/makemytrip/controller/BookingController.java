@@ -14,32 +14,18 @@ public class BookingController {
     private BookingService bookingService;
 
     @PostMapping("/flight")
-    public User.Booking bookFlight(
-            @RequestParam Long userId,
-            @RequestParam Long flightId,
-            @RequestParam int seats,
-            @RequestParam double price) {
+    public User.Booking bookFlight(@RequestParam Long userId, @RequestParam Long flightId,
+                                   @RequestParam int seats, @RequestParam double price) {
 
-        return bookingService.bookFlight(
-                userId,
-                flightId,
-                seats,
-                price
-        );
+        return bookingService.bookFlight(userId, flightId, seats, price);
+          
     }
 
     @PostMapping("/hotel")
-    public User.Booking bookHotel(
-            @RequestParam Long userId,
-            @RequestParam Long hotelId,
-            @RequestParam int rooms,
-            @RequestParam double price) {
+    public User.Booking bookHotel(@RequestParam Long userId, @RequestParam Long hotelId,
+                                  @RequestParam int rooms, @RequestParam double price) {
 
-        return bookingService.bookHotel(
-                userId,
-                hotelId,
-                rooms,
-                price
-        );
+        return bookingService.bookHotel(userId, hotelId, rooms, price);
+        
     }
 }

@@ -1,17 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+"use client";
 
-import { getFlights, addflight, handleflightbooking } from "@/api";
+import { useEffect, useState } from "react";
+import { getFlights, addflight, deleteflight } from "@/api";
 
 interface Flight {
-  id: number;
+  id?: number;
   flightName: string;
   from: string;
   to: string;
@@ -22,144 +15,127 @@ interface Flight {
 }
 
 interface FlightListProps {
-  userId?: number;
+  onAdd?: () => void;
+  onEdit?: (flight: Flight) => void;
 }
 
-const defaultFlights = [
+const defaultFlights: Omit<Flight, "id">[] = [
   {
-    flightName: "IndiGo 6E-101",
+    flightName: "IndiGo 6E-201",
     from: "Chennai",
-    to: "Bangalore",
-    departureTime: "06:00 AM",
-    arrivalTime: "07:05 AM",
-    price: 3500,
-    availableSeats: 30,
-  },
-  {
-    flightName: "Air India AI-202",
-    from: "Chennai",
-    to: "Mumbai",
-    departureTime: "08:30 AM",
-    arrivalTime: "10:45 AM",
-    price: 5200,
-    availableSeats: 25,
-  },
-  {
-    flightName: "IndiGo 6E-303",
-    from: "Bangalore",
     to: "Delhi",
-    departureTime: "09:15 AM",
-    arrivalTime: "12:00 PM",
-    price: 6500,
-    availableSeats: 35,
+    departureTime: "06:30",
+    arrivalTime: "09:20",
+    price: 4899,
+    availableSeats: 45,
   },
   {
-    flightName: "Vistara UK-404",
+    flightName: "Air India AI-302",
     from: "Mumbai",
     to: "Delhi",
-    departureTime: "10:00 AM",
-    arrivalTime: "12:05 PM",
-    price: 5800,
-    availableSeats: 20,
-  },
-  {
-    flightName: "Air India AI-505",
-    from: "Bangalore",
-    to: "Mumbai",
-    departureTime: "11:30 AM",
-    arrivalTime: "13:15 PM",
-    price: 4500,
-    availableSeats: 28,
-  },
-  {
-    flightName: "IndiGo 6E-606",
-    from: "Delhi",
-    to: "Kolkata",
-    departureTime: "01:00 PM",
-    arrivalTime: "03:15 PM",
-    price: 6200,
-    availableSeats: 32,
-  },
-  {
-    flightName: "Vistara UK-707",
-    from: "Kolkata",
-    to: "Chennai",
-    departureTime: "02:30 PM",
-    arrivalTime: "05:15 PM",
-    price: 5900,
-    availableSeats: 22,
-  },
-  {
-    flightName: "IndiGo 6E-808",
-    from: "Hyderabad",
-    to: "Chennai",
-    departureTime: "04:00 PM",
-    arrivalTime: "05:20 PM",
-    price: 3800,
+    departureTime: "08:15",
+    arrivalTime: "10:45",
+    price: 5999,
     availableSeats: 40,
   },
   {
-    flightName: "Air India AI-909",
-    from: "Delhi",
-    to: "Bangalore",
-    departureTime: "06:30 PM",
-    arrivalTime: "09:15 PM",
-    price: 6800,
-    availableSeats: 18,
+    flightName: "Vistara UK-820",
+    from: "Bengaluru",
+    to: "Mumbai",
+    departureTime: "10:30",
+    arrivalTime: "12:15",
+    price: 4599,
+    availableSeats: 35,
   },
   {
-    flightName: "IndiGo 6E-100",
+    flightName: "Emirates EK-543",
+    from: "Dubai",
+    to: "London",
+    departureTime: "11:30",
+    arrivalTime: "15:45",
+    price: 58999,
+    availableSeats: 25,
+  },
+  {
+    flightName: "Qatar Airways QR-528",
+    from: "Delhi",
+    to: "Doha",
+    departureTime: "14:20",
+    arrivalTime: "16:40",
+    price: 32999,
+    availableSeats: 30,
+  },
+  {
+    flightName: "Singapore Airlines SQ-423",
     from: "Chennai",
-    to: "Hyderabad",
-    departureTime: "08:00 PM",
-    arrivalTime: "09:20 PM",
-    price: 4100,
-    availableSeats: 27,
+    to: "Singapore",
+    departureTime: "18:10",
+    arrivalTime: "00:55",
+    price: 28999,
+    availableSeats: 28,
+  },
+  {
+    flightName: "Air India AI-984",
+    from: "Delhi",
+    to: "Dubai",
+    departureTime: "21:00",
+    arrivalTime: "23:30",
+    price: 24999,
+    availableSeats: 32,
+  },
+  {
+    flightName: "IndiGo 6E-608",
+    from: "Kolkata",
+    to: "Chennai",
+    departureTime: "07:45",
+    arrivalTime: "10:15",
+    price: 5299,
+    availableSeats: 42,
+  },
+  {
+    flightName: "Akasa Air QP-142",
+    from: "Hyderabad",
+    to: "Bengaluru",
+    departureTime: "12:30",
+    arrivalTime: "13:35",
+    price: 3499,
+    availableSeats: 38,
+  },
+  {
+    flightName: "British Airways BA-142",
+    from: "Mumbai",
+    to: "London",
+    departureTime: "23:10",
+    arrivalTime: "05:30",
+    price: 64999,
+    availableSeats: 20,
   },
 ];
 
-const FlightList = ({ userId }: FlightListProps) => {
+const FlightList = ({ onAdd, onEdit }: FlightListProps) => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [loading, setLoading] = useState(true);
   const [creatingFlights, setCreatingFlights] = useState(false);
   const [error, setError] = useState("");
-
-  const [search, setSearch] = useState("");
-
-  const [bookingFlightId, setBookingFlightId] = useState<number | null>(null);
-
-  const [message, setMessage] = useState("");
-
-  // --------------------------------------------------
-  // LOAD FLIGHTS
-  // --------------------------------------------------
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const loadFlights = async () => {
     try {
       setLoading(true);
       setError("");
-      setMessage("");
-
       const data = await getFlights();
-
       console.log("Flights from backend:", data);
 
       if (!Array.isArray(data)) {
         throw new Error("Invalid flight response from backend");
       }
 
-      // If database already contains flights
       if (data.length > 0) {
         setFlights(data);
         return;
       }
 
-      // --------------------------------------------------
-      // DATABASE EMPTY -> CREATE 10 DEFAULT FLIGHTS
-      // --------------------------------------------------
-
       setCreatingFlights(true);
-
       console.log("No flights found. Creating 10 default flights...");
 
       for (const flight of defaultFlights) {
@@ -173,14 +149,11 @@ const FlightList = ({ userId }: FlightListProps) => {
             flight.price,
             flight.availableSeats,
           );
-        } catch (err) {
-          console.error("Failed to create flight:", flight.flightName, err);
+        } catch (error) {
+          console.error("Failed to create flight:", flight.flightName, error);
         }
       }
 
-      setCreatingFlights(false);
-
-      // Get flights again after inserting
       const updatedFlights = await getFlights();
 
       if (Array.isArray(updatedFlights)) {
@@ -188,17 +161,15 @@ const FlightList = ({ userId }: FlightListProps) => {
       } else {
         setFlights([]);
       }
-    } catch (err: any) {
-      console.error("Failed to load flights:", err);
-
-      console.error("Status:", err?.response?.status);
-
-      console.error("Backend response:", err?.response?.data);
+    } catch (error: any) {
+      console.error("Failed to load flights:", error);
+      console.error("Status:", error?.response?.status);
+      console.error("Backend response:", error?.response?.data);
 
       setError(
-        err?.response?.data?.message ||
-          err?.message ||
-          "Failed to load flights from backend.",
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to load flights.",
       );
     } finally {
       setLoading(false);
@@ -206,260 +177,193 @@ const FlightList = ({ userId }: FlightListProps) => {
     }
   };
 
-  // --------------------------------------------------
-  // INITIAL LOAD
-  // --------------------------------------------------
-
   useEffect(() => {
     loadFlights();
   }, []);
 
-  // --------------------------------------------------
-  // SEARCH
-  // --------------------------------------------------
+  const handleDelete = async (id: number) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this flight?",
+    );
 
-  const filteredFlights = useMemo(() => {
-    const value = search.trim().toLowerCase();
-
-    if (!value) {
-      return flights;
-    }
-
-    return flights.filter((flight) => {
-      return (
-        flight.flightName?.toLowerCase().includes(value) ||
-        flight.from?.toLowerCase().includes(value) ||
-        flight.to?.toLowerCase().includes(value)
-      );
-    });
-  }, [flights, search]);
-
-  // --------------------------------------------------
-  // BOOK FLIGHT
-  // --------------------------------------------------
-
-  const bookFlight = async (flight: Flight) => {
-    if (!userId) {
-      setMessage("Please login before booking a flight.");
-      return;
-    }
-
-    if (flight.availableSeats <= 0) {
-      setMessage("No seats available for this flight.");
+    if (!confirmed) {
       return;
     }
 
     try {
-      setBookingFlightId(flight.id);
-      setMessage("");
+      setDeletingId(id);
+      await deleteflight(id);
+      setFlights((previousFlights) =>
+        previousFlights.filter((flight) => flight.id !== id),
+      );
 
-      await handleflightbooking(userId, flight.id, 1, flight.price);
-
-      setMessage(`${flight.flightName} booked successfully!`);
-
-      // Reload latest seat count
-      await loadFlights();
-    } catch (err: any) {
-      console.error("Flight booking failed:", err);
-
-      setMessage(err?.response?.data?.message || "Flight booking failed.");
+      alert("Flight deleted successfully!");
+    } catch (error: any) {
+      console.error("Delete flight error:", error);
+      alert(error?.response?.data?.message || "Failed to delete flight.");
     } finally {
-      setBookingFlightId(null);
+      setDeletingId(null);
     }
   };
 
-  // --------------------------------------------------
-  // LOADING
-  // --------------------------------------------------
-
   if (loading) {
     return (
-      <div className="container py-5 text-center">
-        <div className="spinner-border" role="status" />
-
-        <p className="mt-3">
-          {creatingFlights ? "Creating 10 flights..." : "Loading flights..."}
-        </p>
+      <div className="w-full rounded-xl bg-white p-6 shadow-lg">
+        <div className="text-center">
+          <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
+          <p className="mt-4 text-sm text-gray-500">
+            {creatingFlights ? "Creating 10 flights..." : "Loading flights..."}
+          </p>
+        </div>
       </div>
     );
   }
-
-  // --------------------------------------------------
-  // ERROR
-  // --------------------------------------------------
 
   if (error) {
     return (
-      <div className="container py-5">
-        <div className="alert alert-danger">
-          <h5>Failed to load flights</h5>
+      <div className="rounded-xl bg-white p-8 shadow-lg">
+        <h2 className="text-xl font-bold text-red-600">
+          Failed to load flights
+        </h2>
+        <p className="mt-2 text-sm text-gray-600">{error}</p>
 
-          <p className="mb-3">{error}</p>
-
-          <button className="btn btn-danger" onClick={loadFlights}>
-            Try Again
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={loadFlights}
+          className="mt-5 bg-blue-600 px-5 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+        >
+          TRY AGAIN
+        </button>
       </div>
     );
   }
 
-  // --------------------------------------------------
-  // UI
-  // --------------------------------------------------
-
   return (
-    <div className="container py-4">
-      {/* HEADER */}
-
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div className="rounded-xl bg-white p-4 shadow-lg md:p-5">
+      <div className="mb-5 flex items-center justify-between">
         <div>
-          <h2 className="fw-bold mb-1">Available Flights</h2>
-
-          <p className="text-muted mb-0">{flights.length} flights available</p>
+          <h2 className="text-xl font-bold text-gray-800">Flight List</h2>
+          <p className="mt-1 text-xs text-gray-500">Flights stored in MySQL</p>
         </div>
 
         <button
-          className="btn btn-outline-primary"
-          onClick={loadFlights}
-          disabled={loading}
+          type="button"
+          onClick={onAdd}
+          className="bg-blue-600 px-4 py-2 text-[11px] font-semibold text-white transition hover:bg-blue-700"
         >
-          ↻ Refresh
+          + ADD FLIGHT
         </button>
       </div>
 
-      {/* MESSAGE */}
-
-      {message && (
-        <div
-          className={`alert ${
-            message.toLowerCase().includes("success")
-              ? "alert-success"
-              : "alert-warning"
-          }`}
-        >
-          {message}
-        </div>
-      )}
-
-      {/* SEARCH */}
-
-      <div className="mb-4">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search by flight, departure city or destination..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-
-      {/* RESULT COUNT */}
-
-      <div className="mb-3">
-        <strong>{filteredFlights.length}</strong> flight
-        {filteredFlights.length !== 1 ? "s" : ""} found
-      </div>
-
-      {/* EMPTY */}
-
-      {filteredFlights.length === 0 ? (
-        <div className="text-center py-5 border rounded">
-          <h5>No flights found</h5>
-
-          <p className="text-muted">Try another search.</p>
-
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => setSearch("")}
-          >
-            Clear Search
-          </button>
+      {flights.length === 0 ? (
+        <div className="rounded-lg border border-gray-200 p-10 text-center">
+          <h3 className="font-semibold text-gray-700">No Flights Found</h3>
+          <p className="mt-2 text-sm text-gray-500">
+            Add a new flight to the system.
+          </p>
         </div>
       ) : (
-        /* TABLE */
-
-        <div className="border rounded overflow-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>#</TableHead>
-
-                <TableHead>Flight</TableHead>
-
-                <TableHead>From</TableHead>
-
-                <TableHead>To</TableHead>
-
-                <TableHead>Departure</TableHead>
-
-                <TableHead>Arrival</TableHead>
-
-                <TableHead>Price</TableHead>
-
-                <TableHead>Seats</TableHead>
-
-                <TableHead>Action</TableHead>
-              </TableRow>
-            </TableHeader>
-
-            <TableBody>
-              {filteredFlights.map((flight, index) => (
-                <TableRow key={flight.id}>
-                  <TableCell>{index + 1}</TableCell>
-
-                  <TableCell>
-                    <strong>{flight.flightName}</strong>
-                  </TableCell>
-
-                  <TableCell>{flight.from}</TableCell>
-
-                  <TableCell>{flight.to}</TableCell>
-
-                  <TableCell>{flight.departureTime}</TableCell>
-
-                  <TableCell>{flight.arrivalTime}</TableCell>
-
-                  <TableCell>
+        <div className="overflow-x-auto rounded-lg border border-gray-200">
+          <table className="w-full min-w-[1000px] border-collapse">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase text-gray-700">
+                  Flight Name
+                </th>
+                <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase text-gray-700">
+                  From
+                </th>
+                <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase text-gray-700">
+                  To
+                </th>
+                <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase text-gray-700">
+                  Departure
+                </th>
+                <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase text-gray-700">
+                  Arrival
+                </th>
+                <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase text-gray-700">
+                  Price / Ticket
+                </th>
+                <th className="px-3 py-3 text-left text-[10px] font-semibold uppercase text-gray-700">
+                  Seats
+                </th>
+                <th className="px-3 py-3 text-center text-[10px] font-semibold uppercase text-gray-700">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {flights.map((flight, index) => (
+                <tr
+                  key={flight.id ?? `${flight.flightName}-${index}`}
+                  className="border-b border-gray-200 transition hover:bg-gray-50"
+                >
+                  <td className="px-3 py-3 text-xs font-semibold text-gray-800">
+                    {flight.flightName}
+                  </td>
+                  <td className="px-3 py-3 text-xs text-gray-700">
+                    {flight.from}
+                  </td>
+                  <td className="px-3 py-3 text-xs text-gray-700">
+                    {flight.to}
+                  </td>
+                  <td className="px-3 py-3 text-xs text-gray-700">
+                    {flight.departureTime}
+                  </td>
+                  <td className="px-3 py-3 text-xs text-gray-700">
+                    {flight.arrivalTime}
+                  </td>
+                  <td className="px-3 py-3 text-xs font-semibold text-gray-800">
                     ₹{Number(flight.price).toLocaleString("en-IN")}
-                  </TableCell>
+                  </td>
 
-                  <TableCell>
+                  <td className="px-3 py-3 text-xs font-semibold">
                     <span
                       className={
                         flight.availableSeats <= 5
-                          ? "text-danger fw-bold"
+                          ? "text-red-600"
                           : flight.availableSeats <= 10
-                            ? "text-warning fw-bold"
-                            : "text-success fw-bold"
+                            ? "text-orange-500"
+                            : "text-gray-800"
                       }
                     >
                       {flight.availableSeats}
                     </span>
-                  </TableCell>
+                  </td>
 
-                  <TableCell>
-                    <button
-                      className="btn btn-primary btn-sm"
-                      disabled={
-                        flight.availableSeats <= 0 ||
-                        bookingFlightId === flight.id
-                      }
-                      onClick={() => bookFlight(flight)}
-                    >
-                      {bookingFlightId === flight.id
-                        ? "Booking..."
-                        : flight.availableSeats <= 0
-                          ? "Sold Out"
-                          : "Book"}
-                    </button>
-                  </TableCell>
-                </TableRow>
+                  <td className="px-3 py-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => onEdit?.(flight)}
+                        className="bg-blue-600 px-4 py-2 text-[10px] font-semibold text-white transition hover:bg-blue-700"
+                      >
+                        EDIT
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() =>
+                          flight.id !== undefined && handleDelete(flight.id)
+                        }
+                        disabled={deletingId === flight.id}
+                        className="bg-red-600 px-4 py-2 text-[10px] font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {deletingId === flight.id ? "..." : "DELETE"}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               ))}
-            </TableBody>
-          </Table>
+            </tbody>
+          </table>
         </div>
       )}
+
+      <div className="mt-3 text-xs font-semibold text-gray-700">
+        Total Flights: {flights.length}
+      </div>
     </div>
   );
 };

@@ -28,13 +28,17 @@ public class RootController {
 	
 	@GetMapping("/flight")
 	public ResponseEntity<List<Flight>> getallFlights(){
+		
 		List<Flight> flights = flightRepository.findAll();
 		return ResponseEntity.ok(flights);
+		
 	};
 	
 	@GetMapping("/hotel")
 	public ResponseEntity<List<Hotel>> getallHotels(){
+		
 		List<Hotel> hotels = hotelRepository.findAll();
 		return ResponseEntity.ok(hotels);
+		
 	};
 }

@@ -47,23 +47,31 @@ export interface Flight {
 }
 
 const BookFlightPage = () => {
+  
   const router = useRouter();
   const { id } = router.query;
-
   const [flight, setFlight] = useState<Flight | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
-
   const user = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
+
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return "";
+    const date = new Date(`${dateString}T00:00:00`);
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
 
   useEffect(() => {
     const fetchFlight = async () => {
       try {
         setLoading(true);
         const data = await getFlights();
-
         console.log("Flights from backend:", data);
         console.log("Flight ID from URL:", id);
 
@@ -119,7 +127,6 @@ const BookFlightPage = () => {
   const duration = "2h 50m";
   const cabinBaggage = "7 Kgs / Adult";
   const checkInBaggage = "15 Kgs (1 piece only) / Adult";
-
   const taxesPerTicket = Math.round(flight.price * 0.18);
   const otherServicesPerTicket = 249;
   const discountPerTicket = 250;
@@ -213,26 +220,6 @@ const BookFlightPage = () => {
     }
   };
 
-  const formatTime = (timeString: string): string => {
-    if (!timeString) {
-      return "";
-    }
-
-    const [hours, minutes] = timeString.split(":");
-    const date = new Date();
-
-    date.setHours(Number(hours));
-    date.setMinutes(Number(minutes));
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
   const BookingContent = () => (
     <DialogContent className="sm:max-w-[600px] bg-white">
       <DialogHeader>
@@ -275,7 +262,7 @@ const BookFlightPage = () => {
             </Label>
             <Input
               id="departureTime"
-              value={formatTime(flight.departureTime)}
+              value={formatDate(flight.departureDate)}
               readOnly
             />
           </div>
@@ -287,7 +274,8 @@ const BookFlightPage = () => {
             </Label>
             <Input
               id="arrivalTime"
-              value={formatTime(flight.arrivalTime)}
+              className="text-black"
+              value={formatDate(flight.arrivalTime)}
               readOnly
             />
           </div>
@@ -418,7 +406,7 @@ const BookFlightPage = () => {
               <div className="flex flex-wrap md:flex-nowrap justify-between items-start gap-6 border-t pt-6">
                 <div>
                   <div className="text-2xl font-bold text-black">
-                    {formatTime(flight.departureTime)}
+                    {formatDate(flight.departureTime)}
                   </div>
                   <div className="text-sm text-gray-600 mt-1 flex items-start">
                     <MapPin className="w-4 h-4 mr-1 flex-shrink-0 mt-0.5" />
@@ -438,7 +426,7 @@ const BookFlightPage = () => {
 
                 <div className="text-right">
                   <div className="text-2xl font-bold text-black">
-                    {formatTime(flight.arrivalTime)}
+                    {formatDate(flight.arrivalTime)}
                   </div>
                   <div className="text-sm text-gray-600 mt-1 flex items-start justify-end">
                     <MapPin className="w-4 h-4 mr-1 flex-shrink-0 mt-0.5" />

@@ -34,12 +34,9 @@ public class UserController {
     }
     
     @PutMapping("/edit/{id}")
-    public ResponseEntity<User> editProfile(
-            @PathVariable Long id,
-            @RequestBody User updatedUser) {
+    public ResponseEntity<User> editProfile(@PathVariable Long id, @RequestBody User updatedUser) {
 
-        Optional<User> userOptional =
-                userRepository.findById(id);
+        Optional<User> userOptional = userRepository.findById(id);
 
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -51,8 +48,7 @@ public class UserController {
         user.setEmail(updatedUser.getEmail());
         user.setPhoneNumber(updatedUser.getPhoneNumber());
 
-        User savedUser =
-                userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         return ResponseEntity.ok(savedUser);
     }

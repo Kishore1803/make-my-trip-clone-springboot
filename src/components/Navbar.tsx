@@ -3,13 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-
 import SignupDialog from "./SignupDialog";
-
 import { Plane, User, LogOut } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,11 +15,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { clearUser } from "@/store";
 
 const Navbar = () => {
-
+  
   const dispatch = useDispatch();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -80,7 +75,6 @@ const Navbar = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>
                   <DropdownMenuLabel>
-
                     <div className="flex flex-col">
                       <span className="font-semibold text-[12px] text-black">
                         {user.firstName} {user.lastName}

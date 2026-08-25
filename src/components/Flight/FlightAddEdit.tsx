@@ -90,8 +90,7 @@ const AddEditFlight = ({
         if (onSaved) {
           onSaved(updatedFlight);
         }
-      }
-      else {
+      } else {
         const newFlight = await addflight(
           formData.flightName,
           formData.from,
@@ -112,10 +111,8 @@ const AddEditFlight = ({
 
       setFormData(emptyFlight);
       setSelectedFlight(null);
-
     } catch (error) {
       console.error("Flight Save Error:", error);
-
       alert("Failed to save flight.");
     } finally {
       setLoading(false);
@@ -124,7 +121,6 @@ const AddEditFlight = ({
 
   const handleReset = () => {
     setFormData(emptyFlight);
-
     setSelectedFlight(null);
   };
 
@@ -144,7 +140,6 @@ const AddEditFlight = ({
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-
           <div>
             <label className="mb-2 block font-medium text-gray-700">
               Flight Name
@@ -163,7 +158,6 @@ const AddEditFlight = ({
 
           <div>
             <label className="mb-2 block font-medium text-gray-700">From</label>
-
             <input
               type="text"
               name="from"
@@ -177,7 +171,6 @@ const AddEditFlight = ({
 
           <div>
             <label className="mb-2 block font-medium text-gray-700">To</label>
-
             <input
               type="text"
               name="to"
@@ -193,7 +186,6 @@ const AddEditFlight = ({
             <label className="mb-2 block font-medium text-gray-700">
               Departure Time
             </label>
-
             <input
               type="time"
               name="departureTime"
@@ -208,7 +200,6 @@ const AddEditFlight = ({
             <label className="mb-2 block font-medium text-gray-700">
               Arrival Time
             </label>
-
             <input
               type="time"
               name="arrivalTime"
@@ -223,7 +214,6 @@ const AddEditFlight = ({
             <label className="mb-2 block font-medium text-gray-700">
               Price
             </label>
-
             <input
               type="number"
               name="price"
@@ -239,7 +229,6 @@ const AddEditFlight = ({
             <label className="mb-2 block font-medium text-gray-700">
               Available Seats
             </label>
-
             <input
               type="number"
               name="availableSeats"

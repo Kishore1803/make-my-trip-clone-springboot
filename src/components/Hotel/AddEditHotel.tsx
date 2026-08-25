@@ -20,12 +20,7 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
   };
 
   const [formData, setFormData] = useState<Hotel>(initialState);
-
   const [loading, setLoading] = useState(false);
-
-  // ==========================================
-  // IMPORTANT: LOAD HOTEL WHEN EDIT IS CLICKED
-  // ==========================================
 
   useEffect(() => {
     if (hotel) {
@@ -42,10 +37,6 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
     }
   }, [hotel]);
 
-  // ==========================================
-  // INPUT CHANGE
-  // ==========================================
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -60,23 +51,14 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
     }));
   };
 
-  // ==========================================
-  // SAVE / UPDATE
-  // ==========================================
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       setLoading(true);
 
-      // ================================
-      // UPDATE EXISTING HOTEL
-      // ================================
-
       if (hotel?.id) {
         console.log("Updating hotel ID:", hotel.id);
-
         const updatedHotel = await edithotel(
           hotel.id,
           formData.hotelName,
@@ -87,18 +69,12 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
         );
 
         console.log("Updated hotel:", updatedHotel);
-
         onSaved(updatedHotel);
-
         alert("Hotel Updated Successfully");
       }
 
-      // ================================
-      // ADD NEW HOTEL
-      // ================================
       else {
         console.log("Adding new hotel:", formData);
-
         const newHotel = await addhotel(
           formData.hotelName,
           formData.location,
@@ -108,9 +84,7 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
         );
 
         console.log("New hotel:", newHotel);
-
         onSaved(newHotel);
-
         alert("Hotel Added Successfully");
       }
 
@@ -119,9 +93,7 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
       onClose();
     } catch (error: any) {
       console.error("Hotel Save Error:", error);
-
       console.error("Backend:", error?.response?.data);
-
       alert(error?.response?.data?.message || "Failed to save hotel");
     } finally {
       setLoading(false);
@@ -146,7 +118,6 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid gap-5 md:grid-cols-2">
-          {/* HOTEL NAME */}
 
           <div>
             <label className="mb-2 block font-medium text-black">Hotel Name</label>
@@ -161,8 +132,6 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
             />
           </div>
 
-          {/* LOCATION */}
-
           <div>
             <label className="mb-2 block font-medium text-black">Location</label>
             <input
@@ -175,8 +144,6 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
               required
             />
           </div>
-
-          {/* PRICE */}
 
           <div>
             <label className="mb-2 block font-medium text-black">Price Per Night</label>
@@ -191,8 +158,6 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
             />
           </div>
 
-          {/* ROOMS */}
-
           <div>
             <label className="mb-2 block font-medium text-black">Available Rooms</label>
             <input
@@ -205,8 +170,6 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
               required
             />
           </div>
-
-          {/* AMENITIES */}
 
           <div className="md:col-span-2">
             <label className="mb-2 block font-medium text-black">Amenities</label>
@@ -222,8 +185,6 @@ const AddEditHotel = ({ hotel, onClose, onSaved }: AddEditHotelProps) => {
             />
           </div>
         </div>
-
-        {/* BUTTON */}
 
         <div className="flex justify-end gap-3">
           <button

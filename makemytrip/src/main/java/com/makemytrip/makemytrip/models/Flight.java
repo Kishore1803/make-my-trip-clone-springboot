@@ -13,6 +13,7 @@ public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(nullable = false)
@@ -23,6 +24,9 @@ public class Flight {
 
     @Column(name = "arrival_city", nullable = false)
     private String to;
+    
+    @Column(nullable = false)
+    private String departureDate;
 
     @Column(nullable = false)
     private String departureTime;
@@ -36,12 +40,12 @@ public class Flight {
     @Column(nullable = false)
     private int availableSeats;
 
-    // Constructor
     public Flight(
             Long id,
             String flightName,
             String from,
             String to,
+            String departureDate,
             String departureTime,
             String arrivalTime,
             Double price,
@@ -51,17 +55,15 @@ public class Flight {
         this.flightName = flightName;
         this.from = from;
         this.to = to;
+        this.departureDate = departureDate;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.price = price;
         this.availableSeats = availableSeats;
     }
 
-    // Default constructor
     public Flight() {
     }
-
-    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -95,7 +97,15 @@ public class Flight {
         this.to = to;
     }
 
-    public String getDepartureTime() {
+    public String getDepartureDate() {
+		return departureDate;
+	}
+
+	public void setDepartureDate(String departureDate) {
+		this.departureDate = departureDate;
+	}
+
+	public String getDepartureTime() {
         return departureTime;
     }
 

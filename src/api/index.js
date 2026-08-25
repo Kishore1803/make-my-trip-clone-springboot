@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BACKEND_URL =
-  "https://make-my-trip-clone-springboot-backend.onrender.com";
+  "http://localhost:8081";
 
 const API = axios.create({
   baseURL: BACKEND_URL,
@@ -332,7 +332,6 @@ export const handleflightbooking = async (
         },
       }
     );
-
     console.log("Flight Booking:", response.data);
     return response.data;
   } catch (error) {
