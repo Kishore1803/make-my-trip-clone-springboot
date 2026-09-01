@@ -40,17 +40,7 @@ public class Flight {
     @Column(nullable = false)
     private int availableSeats;
 
-    public Flight(
-            Long id,
-            String flightName,
-            String from,
-            String to,
-            String departureDate,
-            String departureTime,
-            String arrivalTime,
-            Double price,
-            int availableSeats
-    ) {
+    public Flight(Long id, String flightName, String from, String to, String departureDate, String departureTime, String arrivalTime, Double price, int availableSeats) {
         this.id = id;
         this.flightName = flightName;
         this.from = from;

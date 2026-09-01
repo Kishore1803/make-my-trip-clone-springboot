@@ -113,6 +113,7 @@ const defaultFlights: Omit<Flight, "id">[] = [
 ];
 
 const FlightList = ({ onAdd, onEdit }: FlightListProps) => {
+
   const [flights, setFlights] = useState<Flight[]>([]);
   const [loading, setLoading] = useState(true);
   const [creatingFlights, setCreatingFlights] = useState(false);

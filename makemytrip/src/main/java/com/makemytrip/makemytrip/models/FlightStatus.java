@@ -12,7 +12,7 @@ public class FlightStatus {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "flight_id", referencedColumnName = "id", nullable = false, unique = true)
+    @JoinColumn(name = "flight_id", referencedColumnName = "id",  nullable = false, unique = true)
     private Flight flight;
 
     @Column(nullable = false)
@@ -36,8 +36,7 @@ public class FlightStatus {
     public FlightStatus() {
     }
 
-    public FlightStatus(Long id, Flight flight, String status, Integer delayMinutes, String delayReason,
-                        LocalDateTime estimatedDeparture, LocalDateTime estimatedArrival, LocalDateTime updatedAt) {
+    public FlightStatus(Long id, Flight flight, String status, Integer delayMinutes, String delayReason, LocalDateTime estimatedDeparture, LocalDateTime estimatedArrival, LocalDateTime updatedAt) {
         this.id = id;
         this.flight = flight;
         this.status = status;

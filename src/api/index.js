@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const BACKEND_URL =
-  "http://localhost:8081";
+const BACKEND_URL = "https://make-my-trip-clone-springboot-backend.onrender.com" || "http://localhost:8081";
 
 const API = axios.create({
   baseURL: BACKEND_URL,
@@ -18,6 +17,7 @@ export const login = async (email, password) => {
       password,
     });
     return response.data;
+
   } catch (error) {
     console.error("Login Error:", error);
     console.error("Status:", error?.response?.status);
@@ -43,6 +43,7 @@ export const signup = async (
       password,
     });
     return response.data;
+
   } catch (error) {
     console.error("Signup Error:", error);
     console.error("Status:", error?.response?.status);
@@ -60,6 +61,7 @@ export const getuserbyemail = async (email) => {
       },
     });
     return response.data;
+
   } catch (error) {
     console.error("Get User Error:", error);
     console.error("Status:", error?.response?.status);
@@ -85,6 +87,7 @@ export const editprofile = async (
     });
     console.log("Updated User:", response.data);
     return response.data;
+
   } catch (error) {
     console.error("Edit Profile Error:", error);
     console.error("Status:", error?.response?.status);
@@ -99,6 +102,7 @@ export const getUsers = async () => {
     const response = await API.get("/admin/user");
     console.log("Users:", response.data);
     return response.data;
+
   } catch (error) {
     console.error("Get Users Error:", error);
     console.error("Status:", error?.response?.status);
@@ -113,6 +117,7 @@ export const getFlights = async () => {
     const response = await API.get("/admin/flight");
     console.log("Flights received:", response.data);
     return response.data;
+
   } catch (error) {
     console.error("Get Flights Error:", error);
     console.error("Status:", error?.response?.status);
@@ -143,13 +148,10 @@ export const addflight = async (
     };
 
     console.log("Sending Flight:", requestData);
-    const response = await API.post(
-      "/admin/flight",
-      requestData
-    );
-
+    const response = await API.post("/admin/flight", requestData);
     console.log("Flight Saved:", response.data);
     return response.data;
+
   } catch (error) {
     console.error("Add Flight Error:", error);
     console.error("Status:", error?.response?.status);
@@ -181,13 +183,10 @@ export const editflight = async (
     };
 
     console.log("Updating Flight:", id, requestData);
-    const response = await API.put(
-      `/admin/flight/${id}`,
-      requestData
-    );
-
+    const response = await API.put(`/admin/flight/${id}`, requestData);
     console.log("Flight Updated:", response.data);
     return response.data;
+
   } catch (error) {
     console.error("Edit Flight Error:", error);
     console.error("Status:", error?.response?.status);
@@ -199,12 +198,10 @@ export const editflight = async (
 export const deleteflight = async (id) => {
   try {
     console.log("Deleting Flight ID:", id);
-    const response = await API.delete(
-      `/admin/flight/${id}`
-    );
-
+    const response = await API.delete(`/admin/flight/${id}`);
     console.log("Flight Deleted:", response.status);
     return response.data;
+
   } catch (error) {
     console.error("Delete Flight Error:", error);
     console.error("Status:", error?.response?.status);
@@ -245,13 +242,10 @@ export const addhotel = async (
     };
 
     console.log("Sending Hotel:", requestData);
-    const response = await API.post(
-      "/admin/hotel",
-      requestData
-    );
-
+    const response = await API.post("/admin/hotel", requestData);
     console.log("Hotel Saved:", response.data);
     return response.data;
+
   } catch (error) {
     console.error("Add Hotel Error:", error);
     console.error("Status:", error?.response?.status);
@@ -279,13 +273,10 @@ export const edithotel = async (
     };
 
     console.log("Updating Hotel:", id, requestData);
-    const response = await API.put(
-      `/admin/hotel/${id}`,
-      requestData
-    );
-
+    const response = await API.put(`/admin/hotel/${id}`, requestData);
     console.log("Hotel Updated:", response.data);
     return response.data;
+
   } catch (error) {
     console.error("Edit Hotel Error:", error);
     console.error("Status:", error?.response?.status);
@@ -298,12 +289,10 @@ export const edithotel = async (
 export const deletehotel = async (id) => {
   try {
     console.log("Deleting Hotel ID:", id);
-    const response = await API.delete(
-      `/admin/hotel/${id}`
-    );
-
+    const response = await API.delete(`/admin/hotel/${id}`);
     console.log("Hotel Deleted:", response.status);
     return response.data;
+
   } catch (error) {
     console.error("Delete Hotel Error:", error);
     console.error("Status:", error?.response?.status);
@@ -320,8 +309,7 @@ export const handleflightbooking = async (
   price
 ) => {
   try {
-    const response = await API.post(
-      "/booking/flight",
+    const response = await API.post("/booking/flight",
       null,
       {
         params: {
@@ -350,8 +338,7 @@ export const handlehotelbooking = async (
   price
 ) => {
   try {
-    const response = await API.post(
-      "/booking/hotel",
+    const response = await API.post("/booking/hotel",
       null,
       {
         params: {
@@ -364,6 +351,7 @@ export const handlehotelbooking = async (
     );
     console.log("Hotel Booking:", response.data);
     return response.data;
+    
   } catch (error) {
     console.error("Hotel Booking Error:", error);
     console.error("Status:", error?.response?.status);

@@ -1,4 +1,4 @@
-package com.makemytrip.makemytrip.service;
+package com.makemytrip.makemytrip.services;
 
 import java.util.Optional;
 
@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.makemytrip.makemytrip.models.User;
-import com.makemytrip.makemytrip.repository.UserRepository;
+import com.makemytrip.makemytrip.repositories.UserRepository;
 
 @Service
 public class UserService {
@@ -44,7 +44,6 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException("Invalid Password");
         }
-
         return user;
     }
     
@@ -57,9 +56,6 @@ public class UserService {
     		user.setPhoneNumber(updateUser.getPhoneNumber());
     		return userRepository.save(user);
     	}
-    	
 		return null;
-		
     }
-
 }

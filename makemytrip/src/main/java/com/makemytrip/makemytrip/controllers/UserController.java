@@ -1,4 +1,4 @@
-package com.makemytrip.makemytrip.controller;
+package com.makemytrip.makemytrip.controllers;
 
 import java.util.Optional;
 
@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.makemytrip.makemytrip.models.User;
-import com.makemytrip.makemytrip.repository.UserRepository;
-import com.makemytrip.makemytrip.service.UserService;
+import com.makemytrip.makemytrip.repositories.UserRepository;
+import com.makemytrip.makemytrip.services.UserService;
 
 @RestController
 @RequestMapping("/user")
@@ -27,10 +27,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody User user) {
-        return ResponseEntity.ok(
-        		userService.login(
-                        user.getEmail(),
-                        user.getPassword()));
+        return ResponseEntity.ok(userService.login(user.getEmail(),user.getPassword()));
     }
     
     @PutMapping("/edit/{id}")
@@ -49,7 +46,6 @@ public class UserController {
         user.setPhoneNumber(updatedUser.getPhoneNumber());
 
         User savedUser = userRepository.save(user);
-
         return ResponseEntity.ok(savedUser);
     }
 

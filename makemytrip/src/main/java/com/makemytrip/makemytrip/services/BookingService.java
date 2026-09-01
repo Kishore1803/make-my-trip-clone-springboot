@@ -1,4 +1,4 @@
-package com.makemytrip.makemytrip.service;
+package com.makemytrip.makemytrip.services;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -10,9 +10,9 @@ import com.makemytrip.makemytrip.models.Flight;
 import com.makemytrip.makemytrip.models.Hotel;
 import com.makemytrip.makemytrip.models.User;
 import com.makemytrip.makemytrip.models.User.Booking;
-import com.makemytrip.makemytrip.repository.FlightRepository;
-import com.makemytrip.makemytrip.repository.HotelRepository;
-import com.makemytrip.makemytrip.repository.UserRepository;
+import com.makemytrip.makemytrip.repositories.FlightRepository;
+import com.makemytrip.makemytrip.repositories.HotelRepository;
+import com.makemytrip.makemytrip.repositories.UserRepository;
 
 @Service
 public class BookingService {
@@ -37,6 +37,7 @@ public class BookingService {
 			Flight flight = flightOptional.get();
 			
 			if(flight.getAvailableSeats() >= seats) {
+				
 				flight.setAvailableSeats(flight.getAvailableSeats()-seats);
 				flightRepository.save(flight);
 				
@@ -69,6 +70,7 @@ public Booking bookHotel(Long userId, Long hotelId, int rooms, double price) {
 			Hotel hotel = hotelOptional.get();
 			
 			if(hotel.getAvailableRooms() >= rooms) {
+				
 				hotel.setAvailableRooms(hotel.getAvailableRooms()-rooms);
 				hotelRepository.save(hotel);
 				

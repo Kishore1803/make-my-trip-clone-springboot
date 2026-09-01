@@ -1,12 +1,10 @@
-package com.makemytrip.makemytrip.repository;
+package com.makemytrip.makemytrip.repositories;
 
 import com.makemytrip.makemytrip.models.FlightStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface FlightStatusRepository
-        extends JpaRepository<FlightStatus, Long> {
-
+public interface FlightStatusRepository extends JpaRepository<FlightStatus, Long> {
     Optional<FlightStatus> findByFlight_Id(Long flightId);
 }

@@ -77,19 +77,16 @@ public class Hotel {
 	public void setAmenities(String amenities) {
 		this.amenities = amenities;
 	}
+	
+	public Hotel() {
+	}
 
-	public Hotel(Long id, String hotelName, String location, Double pricePerNight, int availableRooms,
-			String amenities) {
-		super();
+	public Hotel(Long id, String hotelName, String location, Double pricePerNight, int availableRooms, String amenities) {
 		this.id = id;
 		this.hotelName = hotelName;
 		this.location = location;
 		this.pricePerNight = pricePerNight;
 		this.availableRooms = availableRooms;
 		this.amenities = amenities;
-	}
-	
-	public Hotel() {
-		
 	}
 }

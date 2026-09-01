@@ -1,113 +1,39 @@
 import axios from "axios";
 
-const FLIGHT_STATUS_URL = "http://localhost:8081";
+const API_URL = "https://make-my-trip-clone-springboot-backend.onrender.com" || "http://localhost:8081";
 
-export const getFlightStatuses = async () => {
-  try {
-    const response = await axios.get(
-      `${FLIGHT_STATUS_URL}/api/flight-status`
-    );
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Get Flight Status Error:",
-      error
-    );
-    throw error;
-  }
+// Get all flight statuses
+export const getFlightStatus = async () => {
+  const response = await axios.get(`${API_URL}/api/flight-status`);
+  return response.data;
 };
 
-export const getFlightStatusById = async (
-  flightId
-) => {
-  try {
-    const response = await axios.get(
-      `${FLIGHT_STATUS_URL}/api/flight-status/${flightId}`
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Get Flight Status By ID Error:",
-      error
-    );
-    throw error;
-  }
+// Get one flight status
+export const getFlightStatusById = async (flightId) => {
+  const response = await axios.get(`${API_URL}/api/flight-status/${flightId}`);
+  return response.data;
 };
 
-export const updateFlightStatus = async (
-  flightId,
-  status,
-  delayMinutes,
-  delayReason,
-  estimatedDeparture,
-  estimatedArrival
-) => {
-  try {
-    const response = await axios.put(
-      `${FLIGHT_STATUS_URL}/api/flight-status/${flightId}`,
-      {
-        status,
-        delayMinutes,
-        delayReason,
-        estimatedDeparture,
-        estimatedArrival,
-      }
-    );
-
+// Simulate flight status
+export const simulateFlightStatus = async (flightId) => {
+    const response = await axios.put(`${API_URL}/api/flight-status/${flightId}/simulate`);
     return response.data;
-  } catch (error) {
-    console.error(
-      "Update Flight Status Error:",
-      error
-    );
-    throw error;
-  }
 };
 
-export const trackFlight = async (
-  flightId,
-  userId
-) => {
-  try {
-    const response = await axios.post(
-      `${FLIGHT_STATUS_URL}/api/flight-status/${flightId}/track`,
-      {
-        userId,
-      }
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Track Flight Error:",
-      error
-    );
-    throw error;
-  }
+// Track flight
+export const trackFlight = async (flightId, userId) => {
+  const response = await axios.post(`${API_URL}/api/flight-tracking/${flightId}?userId=${userId}`);
+  return response.data;
 };
 
+// Stop tracking flight
+export const stopTrackingFlight = async (flightId,userId) => {
+  const response = await axios.delete(`${API_URL}/api/flight-tracking/${flightId}?userId=${userId}`);
+  return response.data;
+};
 
-export const stopTrackingFlight = async (
-  flightId,
-  userId
-) => {
-  try {
-    const response = await axios.delete(
-      `${FLIGHT_STATUS_URL}/api/flight-status/${flightId}/track`,
-      {
-        data: {
-          userId,
-        },
-      }
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Stop Tracking Error:",
-      error
-    );
-    throw error;
-  }
+// Get user's tracked flights
+export const getTrackedFlights = async (userId) => {
+  const response = await axios.get(`${API_URL}/api/flight-tracking?userId=${userId}`);
+  return response.data;
 };

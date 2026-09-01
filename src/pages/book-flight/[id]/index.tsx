@@ -134,20 +134,17 @@ const BookFlightPage = () => {
   const totalTaxes = taxesPerTicket * quantity;
   const totalOtherServices = otherServicesPerTicket * quantity;
   const totalDiscounts = discountPerTicket * quantity;
-  const grandTotal =
-    totalPrice + totalTaxes + totalOtherServices - totalDiscounts;
+  const grandTotal = totalPrice + totalTaxes + totalOtherServices - totalDiscounts;
 
   const promoOffers = [
     {
       code: "MMTSECURE",
-      description:
-        "Get an instant discount of ₹299 on your flight booking and Trip Secure with this coupon!",
+      description: "Get an instant discount of ₹299 on your flight booking and Trip Secure with this coupon!",
       amount: 299,
     },
     {
       code: "SPECIALUPI",
-      description:
-        "Use this code and get ₹362 instant discount on payments via UPI only!",
+      description: "Use this code and get ₹362 instant discount on payments via UPI only!",
       amount: 362,
     },
   ];
@@ -157,24 +154,21 @@ const BookFlightPage = () => {
       name: "Hotel Park Tree",
       rating: 4,
       price: 9000,
-      image:
-        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800",
+      image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800",
       location: "Near Airport, New Delhi",
     },
     {
       name: "Lemon Tree Premier",
       rating: 4,
       price: 43875,
-      image:
-        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800",
+      image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800",
       location: "Connaught Place, New Delhi",
     },
     {
       name: "Hotel Kian",
       rating: 4,
       price: 1968,
-      image:
-        "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800",
+      image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800",
       location: "Karol Bagh, New Delhi",
     },
   ];
@@ -197,23 +191,17 @@ const BookFlightPage = () => {
     }
 
     try {
-      const data = await handleflightbooking(
-        user.id,
-        flight.id,
-        quantity,
-        grandTotal,
-      );
+      const data = await handleflightbooking(user.id, flight.id, quantity, grandTotal,);
 
       const updateUser = {
-        ...user,
-        bookings: [...(user.bookings || []), data],
+        ...user, bookings: [...(user.bookings || []), data],
       };
 
       dispatch(setUser(updateUser));
       setOpen(false);
       setQuantity(1);
-
       router.push("/profile");
+
     } catch (error) {
       console.error("Flight Booking Error:", error);
       alert("Flight booking failed. Please try again.");
@@ -223,13 +211,13 @@ const BookFlightPage = () => {
   const BookingContent = () => (
     <DialogContent className="sm:max-w-[600px] bg-white">
       <DialogHeader>
-        <DialogTitle className="text-2xl font-bold flex items-center">
+        <DialogTitle className="text-2xl font-bold text-black flex items-center">
           <Plane className="w-6 h-6 mr-2" />
           Flight Booking Details
         </DialogTitle>
       </DialogHeader>
 
-      <div className="grid gap-6 mt-4">
+      <div className="grid gap-6 mt-4 text-black">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="flightName" className="flex items-center">
@@ -304,12 +292,12 @@ const BookFlightPage = () => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-black font-bold">Base Fare</span>
+              <span className="text-gray-600">Base Fare</span>
               <span className="font-blod">₹ {totalPrice.toLocaleString()}</span>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-black font-bold">Taxes and Surcharges</span>
+              <span className="text-gray-600">Taxes and Surcharges</span>
               <span className="text-black">
                 ₹ {totalTaxes.toLocaleString()}
               </span>
@@ -502,8 +490,7 @@ const BookFlightPage = () => {
                 {hotels.map((hotel, index) => (
                   <div
                     key={index}
-                    className="bg-white border rounded-xl overflow-hidden hover:shadow-md transition-shadow"
-                  >
+                    className="bg-white border rounded-xl overflow-hidden hover:shadow-md transition-shadow">
                     <div className="relative">
                       <img
                         src={hotel.image}
@@ -559,24 +546,24 @@ const BookFlightPage = () => {
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-black font-bold">Base Fare</span>
-                  <span className="text-black">
+                  <span className="text-gray-600">Base Fare</span>
+                  <span className="text-gray-600">
                     ₹ {totalPrice.toLocaleString()}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-black font-bold">
+                  <span className="text-gray-600">
                     Taxes and Surcharges
                   </span>
-                  <span className="text-black">
+                  <span className="text-gray-600">
                     ₹ {totalTaxes.toLocaleString()}
                   </span>
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <span className="text-black font-bold">Other Services</span>
-                  <span className="text-black">
+                  <span className="text-gray-600">Other Services</span>
+                  <span className="text-gray-600">
                     ₹ {totalOtherServices.toLocaleString()}
                   </span>
                 </div>

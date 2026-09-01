@@ -13,11 +13,14 @@ import {
   Plane,
   Building2,
 } from "lucide-react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { clearUser, setUser } from "@/store";
 import { editprofile } from "@/api";
+
 const index = () => {
+
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user.user);
   const router = useRouter();
@@ -26,6 +29,7 @@ const index = () => {
     dispatch(clearUser());
     router.push("/");
   };
+
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
     firstName: user?.firstName ? user?.firstName : "",
@@ -236,7 +240,7 @@ const index = () => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">
+                        <p className="font-semibold text-black">
                           ₹ {booking?.totalPrice.toLocaleString("en-IN")}
                         </p>
                         <p className="text-sm text-gray-500">{booking?.type}</p>

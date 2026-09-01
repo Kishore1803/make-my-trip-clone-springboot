@@ -156,10 +156,8 @@ const FlightStatusPage = () => {
   };
 
   const updateFlightStatus = (flightId: number) => {
-    const statusList = ["On Time", "Delayed by 1h", "Boarding"];
-
-    const randomStatus =
-      statusList[Math.floor(Math.random() * statusList.length)];
+  const statusList = ["On Time", "Delayed by 1h", "Boarding"];
+  const randomStatus = statusList[Math.floor(Math.random() * statusList.length)];
 
     let newStatus: FlightStatusData;
 
@@ -263,14 +261,13 @@ const FlightStatusPage = () => {
     const hours24 = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
     const period = hours24 >= 12 ? "PM" : "AM";
-
     let hours12 = hours24 % 12;
+
     if (hours12 === 0) {
       hours12 = 12;
     }
     return `${hours12}:${minutes.toString().padStart(2, "0")} ${period}`;
   };
-
 
   const getStatusStyle = (status: string) => {
     if (status === "Delayed by 1h") {
@@ -292,12 +289,10 @@ const FlightStatusPage = () => {
     return <CheckCircle className="h-4 w-4" />;
   };
 
-
   const delayedFlights = flights.filter((flight) => {
     const status = getCurrentStatus(flight.id);
     return status.status === "Delayed by 1h";
   }).length;
-
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -443,7 +438,6 @@ const FlightStatusPage = () => {
 
                     <div className="mt-2 flex items-center gap-1 text-sm text-gray-600">
                       <MapPin className="h-4 w-4" />
-
                       {flight.from}
                     </div>
 
@@ -469,7 +463,6 @@ const FlightStatusPage = () => {
 
                     <div className="mt-2 flex items-center gap-1 text-sm text-gray-600 md:justify-end">
                       <MapPin className="h-4 w-4" />
-
                       {flight.to}
                     </div>
 

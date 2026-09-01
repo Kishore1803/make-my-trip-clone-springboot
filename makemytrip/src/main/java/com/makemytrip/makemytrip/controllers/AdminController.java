@@ -1,4 +1,4 @@
-package com.makemytrip.makemytrip.controller;
+package com.makemytrip.makemytrip.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,13 +11,12 @@ import com.makemytrip.makemytrip.models.User;
 import com.makemytrip.makemytrip.models.Flight;
 import com.makemytrip.makemytrip.models.Hotel;
 
-import com.makemytrip.makemytrip.repository.UserRepository;
-import com.makemytrip.makemytrip.repository.FlightRepository;
-import com.makemytrip.makemytrip.repository.HotelRepository;
+import com.makemytrip.makemytrip.repositories.UserRepository;
+import com.makemytrip.makemytrip.repositories.FlightRepository;
+import com.makemytrip.makemytrip.repositories.HotelRepository;
 
 @RestController
 @RequestMapping("/admin")
-
 public class AdminController {
 
     @Autowired
@@ -58,7 +57,6 @@ public class AdminController {
         
         if (flightOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
-            
         }
         
         Flight flight = flightOptional.get();
@@ -91,20 +89,16 @@ public class AdminController {
     // GET ALL HOTELS
     @GetMapping("/hotel")
     public ResponseEntity<List<Hotel>> getAllHotels() {
-    	
         List<Hotel> hotels = hotelRepository.findAll();
         return ResponseEntity.ok(hotels);
     }
 
-
     // ADD HOTEL
     @PostMapping("/hotel")
     public ResponseEntity<Hotel> addHotel(@RequestBody Hotel hotel) {
-
         Hotel savedHotel = hotelRepository.save(hotel);
         return ResponseEntity.ok(savedHotel);
     }
-
 
     // EDIT HOTEL
     @PutMapping("/hotel/{id}")
@@ -113,8 +107,7 @@ public class AdminController {
         Optional<Hotel> hotelOptional = hotelRepository.findById(id);
         
         if (hotelOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-            
+            return ResponseEntity.notFound().build();   
         }
 
         Hotel hotel = hotelOptional.get();
@@ -128,7 +121,6 @@ public class AdminController {
         return ResponseEntity.ok(savedHotel);
     }
 
-
     // DELETE HOTEL
     @DeleteMapping("/hotel/{id}")
     public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
@@ -136,10 +128,8 @@ public class AdminController {
         Optional<Hotel> hotelOptional = hotelRepository.findById(id);
         
         if (hotelOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-            
+            return ResponseEntity.notFound().build();  
         }
-        
         hotelRepository.delete(hotelOptional.get());
         return ResponseEntity.noContent().build();
     }
