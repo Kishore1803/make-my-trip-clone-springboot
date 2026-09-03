@@ -61,8 +61,8 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
         const data = await signup(
           firstName,
           lastName,
-          email,
           phoneNumber,
+          email,
           password,
         );
         dispatch(setUser(data));
