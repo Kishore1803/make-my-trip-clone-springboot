@@ -21,18 +21,17 @@ public class UserService {
     public User signup(User user) {
 
         Optional<User> existingEmail = userRepository.findByEmail(user.getEmail());
-
         if (existingEmail.isPresent()) {
             throw new RuntimeException("Email already exists");
         }
 
         Optional<User> existingPhone = userRepository.findByPhoneNumber(user.getPhoneNumber());
-
         if (existingPhone.isPresent()) {
             throw new RuntimeException("Phone Number already exists");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole("USER");
         return userRepository.save(user);
     }
 

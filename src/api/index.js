@@ -116,6 +116,7 @@ export const getUsers = async () => {
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -128,6 +129,7 @@ export const getFlights = async () => {
     return response.data;
 
   } catch (error) {
+    
     console.error("Get Flights Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
