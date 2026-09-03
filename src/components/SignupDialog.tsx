@@ -17,13 +17,13 @@ import { Input } from "./ui/input";
 import { signup, login } from "../api";
 import { setUser } from "@/store";
 import { useDispatch } from "react-redux";
+import { Eye, EyeOff } from "lucide-react";
 
 interface SignupDialogProps {
   trigger?: React.ReactNode;
 }
 
 const SignupDialog = ({ trigger }: SignupDialogProps) => {
-
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
@@ -32,6 +32,7 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,9 +51,7 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
     setError("");
   };
 
-  const handleAuth = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleAuth = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (loading) {
@@ -71,37 +70,28 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
           lastName,
           phoneNumber,
           email,
-          password
+          password,
         );
 
         console.log("Signup successful:", data);
         dispatch(setUser(data));
         setOpen(false);
         clearForm();
-
       } else {
-        const data = await login(
-          email,
-          password
-        );
+        const data = await login(email, password);
 
         console.log("Login successful:", data);
         dispatch(setUser(data));
         setOpen(false);
         clearForm();
-
       }
     } catch (error: any) {
       console.error("Authentication error:", error);
 
       if (isSignup) {
-        const message =
-          error?.response?.data?.message;
+        const message = error?.response?.data?.message;
 
-        setError(
-          message ||
-            "Unable to create account. Please try again."
-        );
+        setError(message || "Unable to create account. Please try again.");
       } else {
         setError("Invalid email or password.");
       }
@@ -140,9 +130,7 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
       <DialogContent className="bg-white sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-black">
-            {isSignup
-              ? "Create Account"
-              : "Welcome Back"}
+            {isSignup ? "Create Account" : "Welcome Back"}
           </DialogTitle>
 
           <DialogDescription>
@@ -152,41 +140,30 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <form
-          onSubmit={handleAuth}
-          className="space-y-4 py-4"
-        >
+        <form onSubmit={handleAuth} className="space-y-4 py-4">
           {isSignup && (
             <div className="grid grid-cols-2 gap-4 text-black">
               <div className="space-y-2">
-                <Label htmlFor="firstName">
-                  First Name
-                </Label>
+                <Label htmlFor="firstName">First Name</Label>
 
                 <Input
                   id="firstName"
                   type="text"
                   value={firstName}
-                  onChange={(event) =>
-                    setFirstName(event.target.value)
-                  }
+                  onChange={(event) => setFirstName(event.target.value)}
                   required
                   disabled={loading}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lastName">
-                  Last Name
-                </Label>
+                <Label htmlFor="lastName">Last Name</Label>
 
                 <Input
                   id="lastName"
                   type="text"
                   value={lastName}
-                  onChange={(event) =>
-                    setLastName(event.target.value)
-                  }
+                  onChange={(event) => setLastName(event.target.value)}
                   required
                   disabled={loading}
                 />
@@ -195,52 +172,52 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
           )}
 
           <div className="space-y-2 text-black">
-            <Label htmlFor="email">
-              Email
-            </Label>
+            <Label htmlFor="email">Email</Label>
 
             <Input
               id="email"
               type="email"
               value={email}
-              onChange={(event) =>
-                setEmail(event.target.value)
-              }
+              onChange={(event) => setEmail(event.target.value)}
               required
               disabled={loading}
             />
           </div>
 
           <div className="space-y-2 text-black">
-            <Label htmlFor="password">
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
 
             <Input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
-              onChange={(event) =>
-                setPassword(event.target.value)
-              }
+              className="pr-10"
+              onChange={(event) => setPassword(event.target.value)}
               required
               disabled={loading}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-6 top-1/2 translate-y-1/4 py-3"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
           </div>
 
           {isSignup && (
             <div className="space-y-2 text-black">
-              <Label htmlFor="phoneNumber">
-                Phone Number
-              </Label>
+              <Label htmlFor="phoneNumber">Phone Number</Label>
 
               <Input
                 id="phoneNumber"
                 type="tel"
                 value={phoneNumber}
-                onChange={(event) =>
-                  setPhoneNumber(event.target.value)
-                }
+                onChange={(event) => setPhoneNumber(event.target.value)}
                 required
                 disabled={loading}
               />
@@ -258,11 +235,7 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
             disabled={loading}
             className="w-full bg-blue-600 text-white hover:bg-blue-700"
           >
-            {loading
-              ? "Please wait..."
-              : isSignup
-              ? "Sign Up"
-              : "Login"}
+            {loading ? "Please wait..." : isSignup ? "Sign Up" : "Login"}
           </Button>
         </form>
 
@@ -283,7 +256,6 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
           ) : (
             <>
               Don't have an account?{" "}
-
               <Button
                 type="button"
                 variant="link"

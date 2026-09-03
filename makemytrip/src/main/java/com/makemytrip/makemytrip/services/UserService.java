@@ -33,7 +33,7 @@ public class UserService {
             throw new RuntimeException("Phone Number already exists");
         }
 
-        // Encode password only during signup
+        // Encoder password only during signup
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         // Every public signup is a normal USER

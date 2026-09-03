@@ -1,7 +1,6 @@
 "use client";
 
 import { useSelector } from "react-redux";
-import Navbar from "@/components/Navbar";
 import FlightTracking from "@/components/FlightTracking/FlightTracking";
 
 const FlightTrackingPage = () => {
@@ -10,8 +9,6 @@ const FlightTrackingPage = () => {
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-100">
-        <Navbar />
-
         <div className="flex min-h-[70vh] items-center justify-center px-4">
           <div className="rounded-xl bg-white p-8 text-center shadow-md">
             <h1 className="text-2xl font-bold text-gray-800">Login Required</h1>
@@ -26,7 +23,6 @@ const FlightTrackingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar />
 
       <main className="px-4 py-8">
         <div className="mx-auto max-w-7xl">

@@ -21,19 +21,24 @@ export const simulateFlightStatus = async (flightId) => {
 };
 
 // Track flight
-export const trackFlight = async (flightId, userId) => {
-  const response = await axios.post(`${API_URL}/api/flight-tracking/${flightId}?userId=${userId}`);
+export const trackFlight = async (flightId, userId, status) => {
+  const response = await axios.post(`${API_URL}/api/flight-tracking`,
+    {
+      flightId: flightId,
+      status: status
+    }
+  );
   return response.data;
 };
 
 // Stop tracking flight
-export const stopTrackingFlight = async (flightId,userId) => {
-  const response = await axios.delete(`${API_URL}/api/flight-tracking/${flightId}?userId=${userId}`);
+export const stopTrackingFlight = async (flightId) => {
+  const response = await axios.delete(`${API_URL}/api/flight-tracking/${flightId}`);
   return response.data;
 };
 
-// Get user's tracked flights
-export const getTrackedFlights = async (userId) => {
-  const response = await axios.get(`${API_URL}/api/flight-tracking?userId=${userId}`);
+// Get tracked flights
+export const getTrackedFlights = async () => {
+  const response = await axios.get(`${API_URL}/api/flight-tracking`);
   return response.data;
 };

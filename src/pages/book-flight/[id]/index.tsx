@@ -70,6 +70,7 @@ const BookFlightPage = () => {
   useEffect(() => {
     const fetchFlight = async () => {
       try {
+        
         setLoading(true);
         const data = await getFlights();
         console.log("Flights from backend:", data);

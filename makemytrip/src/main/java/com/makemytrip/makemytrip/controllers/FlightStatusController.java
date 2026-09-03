@@ -11,6 +11,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/flight-status")
 public class FlightStatusController {
+	
+	@GetMapping
+	public ResponseEntity<?> getAllFlightStatuses() {
+	    return ResponseEntity.ok(Map.of("message", "Flight statuses loaded successfully",
+	    		"lastUpdated", LocalDateTime.now()));
+	}
 
     @GetMapping("/{flightId}")
     public ResponseEntity<?> getFlightStatus(@PathVariable Long flightId) {

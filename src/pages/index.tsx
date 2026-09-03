@@ -292,7 +292,7 @@ export default function Home() {
     };
 
     fetchdata();
-  }, []);
+  }, [user]);
 
   const cityOptions = useMemo(() => {
     const cities = new Set<string>();
