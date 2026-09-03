@@ -18,7 +18,13 @@ import {
 } from "lucide-react";
 
 import { getHotels, handlehotelbooking } from "@/api";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,7 +42,6 @@ interface Hotel {
 }
 
 const BookHotelPage = () => {
-
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state.user.user);
@@ -65,16 +70,13 @@ const BookHotelPage = () => {
         if (selectedHotel) {
           console.log("Selected Hotel:", selectedHotel);
           setHotel(selectedHotel);
-
         } else {
           console.log("Hotel not found");
           setHotel(null);
         }
-
       } catch (error) {
         console.error("Get Hotel Error:", error);
         setHotel(null);
-
       } finally {
         setLoading(false);
       }
@@ -164,7 +166,8 @@ const BookHotelPage = () => {
     ? hotel.amenities
         .split(",")
         .map((item) => item.trim())
-        .filter(Boolean): [];
+        .filter(Boolean)
+    : [];
 
   const roomPrice = Number(hotel.pricePerNight);
   const roomCharges = roomPrice * rooms;
@@ -185,7 +188,6 @@ const BookHotelPage = () => {
     setRooms(newRooms);
   };
 
-
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -202,13 +204,15 @@ const BookHotelPage = () => {
       setBookingLoading(true);
       const booking = await handlehotelbooking(user.id, hotel.id, rooms, total);
       console.log("Hotel booking response:", booking);
-      const updatedUser = {...user, bookings: [...(user.bookings || []), booking],};
+      const updatedUser = {
+        ...user,
+        bookings: [...(user.bookings || []), booking],
+      };
 
       dispatch(setUser(updatedUser));
       setOpen(false);
       alert("Hotel booked successfully!");
       router.push("/profile");
-
     } catch (error: any) {
       console.error("Hotel Booking Error:", error);
       console.error("Server Response:", error?.response?.data);
@@ -217,7 +221,6 @@ const BookHotelPage = () => {
       setBookingLoading(false);
     }
   };
-
 
   const BookingContent = () => {
     return (
@@ -611,12 +614,8 @@ const BookHotelPage = () => {
 
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger
-                  render={
-                    <Button
-                      type="button"
-                      className="w-full py-6 text-white font-semibold bg-black"
-                    />
-                  }
+                  type="button"
+                  className="w-full py-3 text-white font-semibold bg-black rounded-md"
                 >
                   BOOK THIS NOW
                 </DialogTrigger>

@@ -26,8 +26,8 @@ public class FlightStatusController {
                         "status", request.getStatus(), "message", request.getMessage(),
                         "departureTime", request.getDepartureTime(),
                         "arrivalTime", request.getArrivalTime(),
-                        "delayReason", request.getDelayReason(), "lastUpdated",
-                        LocalDateTime.now()));
+                        "delayReason", request.getDelayReason(), 
+                        "lastUpdated", LocalDateTime.now()));
     }
 
     @PutMapping("/{flightId}/delay")

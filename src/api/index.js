@@ -1,17 +1,12 @@
 import axios from "axios";
 
-const BACKEND_URL = "https://make-my-trip-clone-springboot-backend.onrender.com" || "http://localhost:8081";
-
-const API = axios.create({
-  baseURL: BACKEND_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+const BACKEND_URL = "https://make-my-trip-clone-springboot-backend.onrender.com";
+const API = axios.create({baseURL: BACKEND_URL,});
 
 // LOGIN
 export const login = async (email, password) => {
   try {
+
     const response = await API.post("/user/login", {
       email,
       password,
@@ -19,10 +14,12 @@ export const login = async (email, password) => {
     return response.data;
 
   } catch (error) {
+
     console.error("Login Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -35,6 +32,7 @@ export const signup = async (
   password
 ) => {
   try {
+
     const response = await API.post("/user/signup", {
       firstName,
       lastName,
@@ -45,16 +43,19 @@ export const signup = async (
     return response.data;
 
   } catch (error) {
+
     console.error("Signup Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
 // GET USER BY EMAIL
 export const getuserbyemail = async (email) => {
   try {
+
     const response = await API.get("/user/email", {
       params: {
         email,
@@ -63,10 +64,12 @@ export const getuserbyemail = async (email) => {
     return response.data;
 
   } catch (error) {
+
     console.error("Get User Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -79,6 +82,7 @@ export const editprofile = async (
   phoneNumber
 ) => {
   try {
+
     const response = await API.put(`/user/edit/${id}`, {
       firstName,
       lastName,
@@ -89,21 +93,25 @@ export const editprofile = async (
     return response.data;
 
   } catch (error) {
+
     console.error("Edit Profile Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
 // GET ALL USERS
 export const getUsers = async () => {
   try {
+
     const response = await API.get("/admin/user");
     console.log("Users:", response.data);
     return response.data;
 
   } catch (error) {
+
     console.error("Get Users Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
@@ -114,6 +122,7 @@ export const getUsers = async () => {
 // GET ALL FLIGHTS
 export const getFlights = async () => {
   try {
+
     const response = await API.get("/admin/flight");
     console.log("Flights received:", response.data);
     return response.data;
@@ -123,6 +132,7 @@ export const getFlights = async () => {
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -137,6 +147,7 @@ export const addflight = async (
   availableSeats
 ) => {
   try {
+
     const requestData = {
       flightName,
       from,
@@ -153,10 +164,12 @@ export const addflight = async (
     return response.data;
 
   } catch (error) {
+
     console.error("Add Flight Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -172,6 +185,7 @@ export const editflight = async (
   availableSeats
 ) => {
   try {
+
     const requestData = {
       flightName,
       from,
@@ -188,39 +202,48 @@ export const editflight = async (
     return response.data;
 
   } catch (error) {
+
     console.error("Edit Flight Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
 export const deleteflight = async (id) => {
   try {
+
     console.log("Deleting Flight ID:", id);
     const response = await API.delete(`/admin/flight/${id}`);
     console.log("Flight Deleted:", response.status);
     return response.data;
 
   } catch (error) {
+
     console.error("Delete Flight Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
 // GET ALL HOTELS
 export const getHotels = async () => {
   try {
+
     const response = await API.get("/hotel");
     console.log("Hotels received:", response.data);
     return response.data;
+
   } catch (error) {
+
     console.error("Get Hotels Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -233,6 +256,7 @@ export const addhotel = async (
   amenities
 ) => {
   try {
+
     const requestData = {
       hotelName,
       location,
@@ -247,10 +271,12 @@ export const addhotel = async (
     return response.data;
 
   } catch (error) {
+
     console.error("Add Hotel Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -264,6 +290,7 @@ export const edithotel = async (
   amenities
 ) => {
   try {
+
     const requestData = {
       hotelName,
       location,
@@ -278,26 +305,31 @@ export const edithotel = async (
     return response.data;
 
   } catch (error) {
+
     console.error("Edit Hotel Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
 // DELETE HOTEL
 export const deletehotel = async (id) => {
   try {
+
     console.log("Deleting Hotel ID:", id);
     const response = await API.delete(`/admin/hotel/${id}`);
     console.log("Hotel Deleted:", response.status);
     return response.data;
 
   } catch (error) {
+
     console.error("Delete Hotel Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -322,11 +354,14 @@ export const handleflightbooking = async (
     );
     console.log("Flight Booking:", response.data);
     return response.data;
+
   } catch (error) {
+
     console.error("Flight Booking Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+
   }
 };
 
@@ -338,6 +373,7 @@ export const handlehotelbooking = async (
   price
 ) => {
   try {
+
     const response = await API.post("/booking/hotel",
       null,
       {
@@ -349,14 +385,17 @@ export const handlehotelbooking = async (
         },
       }
     );
+
     console.log("Hotel Booking:", response.data);
     return response.data;
     
   } catch (error) {
+
     console.error("Hotel Booking Error:", error);
     console.error("Status:", error?.response?.status);
     console.error("Server Response:", error?.response?.data);
     throw error;
+    
   }
 };
 

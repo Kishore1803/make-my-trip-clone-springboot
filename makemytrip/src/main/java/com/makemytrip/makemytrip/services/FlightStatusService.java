@@ -5,6 +5,7 @@ import com.makemytrip.makemytrip.models.FlightStatus;
 import com.makemytrip.makemytrip.repositories.FlightRepository;
 import com.makemytrip.makemytrip.repositories.FlightStatusRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,7 +17,10 @@ import java.util.Random;
 @Service
 public class FlightStatusService {
 
+	@Autowired
     private final FlightStatusRepository statusRepository;
+	
+	@Autowired
     private final FlightRepository flightRepository;
 
     private final Random random = new Random();

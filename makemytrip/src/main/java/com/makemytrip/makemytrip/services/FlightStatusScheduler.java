@@ -3,13 +3,17 @@ package com.makemytrip.makemytrip.services;
 import com.makemytrip.makemytrip.models.FlightStatus;
 import com.makemytrip.makemytrip.repositories.FlightStatusRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FlightStatusScheduler {
 
+	@Autowired
     private final FlightStatusRepository statusRepository;
+	
+	@Autowired
     private final FlightStatusService statusService;
 
     public FlightStatusScheduler(FlightStatusRepository statusRepository, FlightStatusService statusService) {

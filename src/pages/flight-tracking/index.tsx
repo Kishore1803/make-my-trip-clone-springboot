@@ -15,7 +15,6 @@ const FlightTrackingPage = () => {
         <div className="flex min-h-[70vh] items-center justify-center px-4">
           <div className="rounded-xl bg-white p-8 text-center shadow-md">
             <h1 className="text-2xl font-bold text-gray-800">Login Required</h1>
-
             <p className="mt-2 text-gray-500">
               Please login to track your flights.
             </p>

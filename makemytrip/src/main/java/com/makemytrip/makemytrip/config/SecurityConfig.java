@@ -23,7 +23,6 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
-
         return http.build();
     }
 
@@ -32,12 +31,12 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:3000","http://localhost:5173",
-                        "https://make-my-trip-clone-springboot-frontend.onrender.com"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "https://make-my-trip-clone-springboot-frontend.onrender.com"));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
+        
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);
         return source;

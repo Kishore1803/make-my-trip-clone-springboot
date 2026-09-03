@@ -1,57 +1,63 @@
 package com.makemytrip.makemytrip.services;
 
+import com.makemytrip.makemytrip.dto.FlightTrackingRequest;
+import com.makemytrip.makemytrip.dto.FlightTrackingResponse;
 import com.makemytrip.makemytrip.models.Flight;
-import com.makemytrip.makemytrip.models.FlightTracking;
 import com.makemytrip.makemytrip.repositories.FlightRepository;
-import com.makemytrip.makemytrip.repositories.FlightTrackingRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FlightTrackingService {
 
-    private final FlightTrackingRepository trackingRepository;
+	@Autowired
     private final FlightRepository flightRepository;
 
-    public FlightTrackingService(FlightTrackingRepository trackingRepository,FlightRepository flightRepository) {
-        this.trackingRepository = trackingRepository;
+    public FlightTrackingService(FlightRepository flightRepository) {
         this.flightRepository = flightRepository;
     }
 
+    public FlightTrackingResponse trackFlight(FlightTrackingRequest request) {
 
-    public FlightTracking trackFlight(Long flightId, Long userId) {
+        Flight flight = flightRepository.findById(request.getFlightId())
+                .orElseThrow(() -> new RuntimeException("Flight not found"));
+        
+        String status = request.getStatus();
+        String reason = getReason(status);
+        String estimatedArrivalTime = flight.getArrivalTime();
 
-        Flight flight = flightRepository.findById(flightId)
-        		.orElseThrow(() ->new RuntimeException("Flight not found"));
-
-        Optional<FlightTracking> existing = trackingRepository.findByFlightIdAndUserId(flightId,userId);
-
-        if (existing.isPresent()) {
-            return existing.get();
+        if ("DELAYED".equalsIgnoreCase(status)) {
+            estimatedArrivalTime = getDelayedArrivalTime(flight.getArrivalTime());
         }
 
-        FlightTracking tracking = new FlightTracking();
-
-        tracking.setFlight(flight);
-        tracking.setUserId(userId);
-        tracking.setTrackedAt(LocalDateTime.now());
-
-        return trackingRepository.save(tracking);
+        return new FlightTrackingResponse(flight.getId(), flight.getFlightName(), flight.getFrom(),
+                flight.getTo(), status, reason,flight.getDepartureTime(), 
+                flight.getArrivalTime(), estimatedArrivalTime);
     }
 
-    public void stopTrackingFlight(Long flightId, Long userId) {
+    private String getReason(String status) {
 
-        FlightTracking tracking = trackingRepository.findByFlightIdAndUserId(flightId,userId)
-                        .orElseThrow(() -> new RuntimeException("Flight is not being tracked"));
-        trackingRepository.delete(tracking);
+        if ("DELAYED".equalsIgnoreCase(status)) {
+            return "Technical issue caused a delay";
+        }
+
+        if ("BOARDING".equalsIgnoreCase(status)) {
+            return "Passengers are currently boarding";
+        }
+
+        if ("ON TIME".equalsIgnoreCase(status)) {
+            return "Flight is operating on schedule";
+        }
+
+        if ("CANCELLED".equalsIgnoreCase(status)) {
+            return "Operational issue";
+        }
+        return "Flight status updated";
     }
 
-
-    public List<FlightTracking> getTrackedFlights(Long userId) {
-        return trackingRepository.findByUserId(userId);
+    private String getDelayedArrivalTime(String arrivalTime) {
+        // Mock revised ETA
+        return arrivalTime + " + 1 hour";
     }
 }
