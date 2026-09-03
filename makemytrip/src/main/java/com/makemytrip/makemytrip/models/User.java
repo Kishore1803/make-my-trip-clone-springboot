@@ -46,7 +46,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String phoneNumber, String email, String role, String password, List<Booking> bookings) {
+    public User(Long id, String firstName,String lastName, String phoneNumber, String email, String role, String password, List<Booking> bookings) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -102,7 +102,7 @@ public class User {
     }
 
     public void setRole(String role) {
-        this.role = role;
+        this.role = (role == null || role.isBlank()) ? "USER" : role;
     }
 
     public String getPassword() {
@@ -124,21 +124,21 @@ public class User {
     @Embeddable
     public static class Booking {
 
-    	@Column(nullable = false, length = 50)
+        @Column(nullable = false, length = 50)
         private String type;
-    	
-    	@Column(nullable = false, unique = true)
+
+        @Column(nullable = false, unique = true)
         private Long bookingId;
-    	
-    	@Column(nullable = false)
+
+        @Column(nullable = false)
         private String date;
-    	
-    	@Column(nullable = false)
+
+        @Column(nullable = false)
         private int quantity;
-    	
-    	@Column(nullable = false)
+
+        @Column(nullable = false)
         private Double totalPrice;
-        
+
         public Booking() {
         }
 

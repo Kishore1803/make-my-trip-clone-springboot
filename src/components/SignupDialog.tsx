@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+
 import {
   Dialog,
   DialogContent,
@@ -9,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -21,6 +23,7 @@ interface SignupDialogProps {
 }
 
 const SignupDialog = ({ trigger }: SignupDialogProps) => {
+
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
@@ -33,6 +36,7 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -46,8 +50,10 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
     setError("");
   };
 
-  const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleAuth = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
 
     if (loading) {
       return;
@@ -58,29 +64,47 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
 
     try {
       if (isSignup) {
+        // IMPORTANT:
+        // signup order must match index.js
         const data = await signup(
           firstName,
           lastName,
           phoneNumber,
           email,
-          password,
+          password
         );
+
+        console.log("Signup successful:", data);
         dispatch(setUser(data));
         setOpen(false);
         clearForm();
+
       } else {
-        const data = await login(email, password);
+        const data = await login(
+          email,
+          password
+        );
+
+        console.log("Login successful:", data);
         dispatch(setUser(data));
         setOpen(false);
         clearForm();
+
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Authentication error:", error);
-      setError(
-        isSignup
-          ? "Unable to create account. Please try again."
-          : "Invalid email or password.",
-      );
+
+      if (isSignup) {
+        const message =
+          error?.response?.data?.message;
+
+        setError(
+          message ||
+            "Unable to create account. Please try again."
+        );
+      } else {
+        setError("Invalid email or password.");
+      }
     } finally {
       setLoading(false);
     }
@@ -106,22 +130,19 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
         }
       }}
     >
-      <DialogTrigger asChild>
-        {trigger ?? (
-          <Button
-            variant="outline"
-            className="text-white border-black bg-black border-3"
-            style={{ borderRadius: "8px" }}
-          >
-            Login / Sign Up
-          </Button>
-        )}
+      <DialogTrigger
+        type="button"
+        className="rounded-md border-2 border-black bg-black px-4 py-2 text-white hover:bg-gray-800"
+      >
+        {trigger ?? "Login / Sign Up"}
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px] bg-white">
+      <DialogContent className="bg-white sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-black">
-            {isSignup ? "Create Account" : "Welcome Back"}
+            {isSignup
+              ? "Create Account"
+              : "Welcome Back"}
           </DialogTitle>
 
           <DialogDescription>
@@ -131,28 +152,41 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleAuth} className="space-y-4 py-4">
+        <form
+          onSubmit={handleAuth}
+          className="space-y-4 py-4"
+        >
           {isSignup && (
             <div className="grid grid-cols-2 gap-4 text-black">
-              <div className="space-y-2 ">
-                <Label htmlFor="firstName">First Name</Label>
+              <div className="space-y-2">
+                <Label htmlFor="firstName">
+                  First Name
+                </Label>
 
                 <Input
                   id="firstName"
+                  type="text"
                   value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(event) =>
+                    setFirstName(event.target.value)
+                  }
                   required
                   disabled={loading}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lastName">
+                  Last Name
+                </Label>
 
                 <Input
                   id="lastName"
+                  type="text"
                   value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(event) =>
+                    setLastName(event.target.value)
+                  }
                   required
                   disabled={loading}
                 />
@@ -161,26 +195,34 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
           )}
 
           <div className="space-y-2 text-black">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">
+              Email
+            </Label>
 
             <Input
               id="email"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
               required
               disabled={loading}
             />
           </div>
 
           <div className="space-y-2 text-black">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">
+              Password
+            </Label>
 
             <Input
               id="password"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
               required
               disabled={loading}
             />
@@ -188,13 +230,17 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
 
           {isSignup && (
             <div className="space-y-2 text-black">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Label htmlFor="phoneNumber">
+                Phone Number
+              </Label>
 
               <Input
                 id="phoneNumber"
                 type="tel"
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={(event) =>
+                  setPhoneNumber(event.target.value)
+                }
                 required
                 disabled={loading}
               />
@@ -212,7 +258,11 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
             disabled={loading}
             className="w-full bg-blue-600 text-white hover:bg-blue-700"
           >
-            {loading ? "Please wait..." : isSignup ? "Sign Up" : "Login"}
+            {loading
+              ? "Please wait..."
+              : isSignup
+              ? "Sign Up"
+              : "Login"}
           </Button>
         </form>
 
@@ -233,6 +283,7 @@ const SignupDialog = ({ trigger }: SignupDialogProps) => {
           ) : (
             <>
               Don't have an account?{" "}
+
               <Button
                 type="button"
                 variant="link"
