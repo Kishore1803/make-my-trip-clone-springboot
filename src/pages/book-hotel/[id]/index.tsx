@@ -121,22 +121,11 @@ const BookHotelPage = () => {
     }
   };
 
-  const checkInDate =
-    typeof checkIn === "string"
-      ? checkIn
-      : Array.isArray(checkIn)
-        ? checkIn[0]
-        : "";
-
-  const checkOutDate =
-    typeof checkOut === "string"
-      ? checkOut
-      : Array.isArray(checkOut)
-        ? checkOut[0]
-        : "";
+  const checkInDate = typeof checkIn === "string"
+  ? checkIn : Array.isArray(checkIn)
+  ? checkIn[0] : "";
 
   const formattedCheckIn = formatDate(checkInDate);
-  const formattedCheckOut = formatDate(checkOutDate);
 
   if (loading) {
     return <Loader />;
@@ -247,11 +236,6 @@ const BookHotelPage = () => {
             <div className="space-y-2">
               <Label>Check-in Date</Label>
               <Input value={formattedCheckIn} readOnly />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Check-out Date</Label>
-              <Input value={formattedCheckOut} readOnly />
             </div>
 
             <div className="space-y-2">

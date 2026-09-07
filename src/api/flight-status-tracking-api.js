@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://make-my-trip-clone-springboot-backend.onrender.com";
+const API_URL = "https://make-my-trip-clone-springboot-Backend.onrender.com";
 
 // Get all flight statuses
 export const getFlightStatus = async () => {

@@ -1,12 +1,10 @@
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-
 import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   return (
     <footer className="bg-black text-gray-300 mt-5">
       <div className="mx-auto max-w-7xl px-8 py-14">
-        {/* Top Section */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           <div>
             <h2 className="mb-5 text-3xl font-bold text-white">
@@ -14,7 +12,7 @@ export default function Footer() {
             </h2>
 
             <p className="leading-8 text-gray-400">
-              Established in 2024, MakeMyTour is one of India's leading travel
+              Established in 2026, MakeMyTour is one of India's leading travel
               booking platforms. Book flights, hotels, buses, trains and holiday
               packages at the best prices with a seamless booking experience.
             </p>

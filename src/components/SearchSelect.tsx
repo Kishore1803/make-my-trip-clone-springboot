@@ -25,7 +25,6 @@ const SearchSelect = ({
 }: SearchSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(value);
-
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -50,20 +49,17 @@ const SearchSelect = ({
   }, []);
 
   const filteredOptions = option.filter((item) =>
-    item.label.toLowerCase().includes(searchTerm.toLowerCase())
+    item.label.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
     <div ref={wrapperRef} className="relative w-full">
-      {/* Search Box */}
-
       <div
         onClick={() => setIsOpen(true)}
         className="cursor-pointer rounded-xl border border-gray-300 bg-white p-4 transition-all duration-300 hover:border-blue-500 hover:shadow-lg"
       >
         <div className="flex items-start gap-3">
           <div className="mt-1 text-blue-600">{icon}</div>
-
           <div className="flex-1">
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               {placeholder}
@@ -110,9 +106,7 @@ const SearchSelect = ({
                     </p>
 
                     {item.subtitle && (
-                      <p className="text-xs text-gray-500">
-                        {item.subtitle}
-                      </p>
+                      <p className="text-xs text-gray-500">{item.subtitle}</p>
                     )}
                   </div>
                 </Button>

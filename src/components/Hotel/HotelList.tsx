@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -10,10 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { Button } from "@/components/ui/button";
 import Loader from "@/components/Loader";
-
 import { getHotels, addhotel, deletehotel } from "@/api";
 
 export interface Hotel {

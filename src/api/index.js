@@ -1,13 +1,9 @@
 import axios from "axios";
 
-const BACKEND_URL = "https://make-my-trip-clone-springboot-backend.onrender.com";
-
-const API = axios.create({
-  baseURL: BACKEND_URL,
-});
+const BACKEND_URL = "http://localhost:8081";
+const API = axios.create({baseURL: BACKEND_URL,});
 
 // ==================== USER LOGIN ====================
-
 export const login = async (email, password) => {
   try {
     const response = await API.post("/user/login", {
@@ -25,7 +21,6 @@ export const login = async (email, password) => {
 };
 
 // ==================== USER SIGNUP ====================
-
 export const signup = async (
   firstName,
   lastName,
@@ -52,7 +47,6 @@ export const signup = async (
 };
 
 // ==================== GET USER BY EMAIL ====================
-
 export const getuserbyemail = async (email) => {
   try {
     const response = await API.get("/user/email", {
@@ -71,7 +65,6 @@ export const getuserbyemail = async (email) => {
 };
 
 // ==================== EDIT PROFILE ====================
-
 export const editprofile = async (
   id,
   firstName,
@@ -115,7 +108,6 @@ export const getUsers = async () => {
 };
 
 // ==================== GET ALL FLIGHTS ====================
-
 export const getFlights = async () => {
   try {
     const response = await API.get("/admin/flight");
@@ -131,7 +123,6 @@ export const getFlights = async () => {
 };
 
 // ==================== ADD FLIGHT ====================
-
 export const addflight = async (
   flightName,
   from,
@@ -166,7 +157,6 @@ export const addflight = async (
 };
 
 // ==================== EDIT FLIGHT ====================
-
 export const editflight = async (
   id,
   flightName,
@@ -202,7 +192,6 @@ export const editflight = async (
 };
 
 // ==================== DELETE FLIGHT ====================
-
 export const deleteflight = async (id) => {
   try {
     console.log("Deleting Flight ID:", id);
@@ -219,7 +208,6 @@ export const deleteflight = async (id) => {
 };
 
 // ==================== GET ALL HOTELS ====================
-
 export const getHotels = async () => {
   try {
     const response = await API.get("/hotel");
@@ -235,7 +223,6 @@ export const getHotels = async () => {
 };
 
 // ==================== ADD HOTEL ====================
-
 export const addhotel = async (
   hotelName,
   location,
@@ -266,7 +253,6 @@ export const addhotel = async (
 };
 
 // ==================== EDIT HOTEL ====================
-
 export const edithotel = async (
   id,
   hotelName,
@@ -298,7 +284,6 @@ export const edithotel = async (
 };
 
 // ==================== DELETE HOTEL ====================
-
 export const deletehotel = async (id) => {
   try {
     console.log("Deleting Hotel ID:", id);
@@ -315,7 +300,6 @@ export const deletehotel = async (id) => {
 };
 
 // ==================== BOOK FLIGHT ====================
-
 export const handleflightbooking = async (
   userId,
   flightId,
@@ -347,7 +331,6 @@ export const handleflightbooking = async (
 };
 
 // ==================== BOOK HOTEL ====================
-
 export const handlehotelbooking = async (
   userId,
   hotelId,
